@@ -1,0 +1,20 @@
+header{
+  background: #555555;
+}
+
+.header__wrapper {
+  max-width: 1100px;
+  margin: auto;
+  color: #ddd;
+  display: flex;
+  justify-content: space-between;
+
+  .link-wrapper {
+    align-self: center;
+  }
+
+  #header {
+    overflow: auto;
+  }
+
+}
