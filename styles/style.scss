@@ -1,0 +1,53 @@
+@import "./components/notFoundPage";
+@import "./components/login";
+
+
+body {
+  margin: 0;
+  background-color: #344a72;
+  min-height: 100vh;
+  height: 100%;
+  color: #ddd;
+}
+
+.container{
+  max-width: 1100px;
+  margin: 100px auto 0;
+}
+
+button {
+    background: #50005a;
+    border: 1px solid #50005a;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+}
+
+.link-wrapper {
+  a {
+    background: transparent;
+    border: none;
+    font-size: 2.5rem;
+    font-weight: 600;
+    //color: #3399ff;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-repeat: no-repeat;
+    transition: 0.5s ease-out;
+    background-image: linear-gradient(to bottom, #fb3569 45%, #3399ff 55%);
+    background-size: 100% 220%;
+    background-position: 50% 100%;
+
+    &:hover {
+      background-position: 50% 0;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+
+
