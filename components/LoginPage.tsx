@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {
     CognitoUser,
     AuthenticationDetails,
-    CognitoUserAttribute,
+    CognitoUserAttribute, CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 
-interface jwtTokenId {
+interface jwtTokenIdType {
     "aud": string,
     "auth_time": string,
     "cognito:username" : string,
@@ -23,33 +24,59 @@ interface jwtTokenId {
     "token_use": string,
 }
 
-
 function LoginPage() {
     const [username, setUsername] = useState("katzz");
     const [email, setEmail] = useState("katzz@seznam.cz");
     const [password, setPassword] = useState("Monitor11!");
     const [isUserLogged, setIsUserLogged] = useState(false);
     const [loggedUserUsername, setLoggedUserUsername] = useState("");
+    const [idToken, setIdToken] = useState("");
+    const [accessToken, setAccessToken] = useState("");
+    const [refreshToken, setRefreshToken] = useState("");
+    const [messageFromBackend, setMessageFromBackend] = useState("");
 
     useEffect(() => {
-        checkIfUserIsLogged()
+        getSession()
+            .then((session:CognitoUserSession | unknown ) => {
+                console.log(session);
+                if (session instanceof CognitoUserSession) {
+                    setIsUserLogged(true);
+                    setLoggedUserUsername(session.getAccessToken().payload.username);
+                    setIdToken(session.getIdToken().getJwtToken());
+                    setAccessToken(session.getAccessToken().getJwtToken());
+                    setRefreshToken(session.getRefreshToken().getToken());
+                }
+                
+            }).catch(() => {
+                console.log("user is not logged");
+                setIsUserLogged(false);
+                setLoggedUserUsername("");
+                setIdToken("");
+                setAccessToken("");
+                setRefreshToken("");
+                
+        });
     }, [])
 
-    function checkIfUserIsLogged() {
-        console.log("checking user")
-        const user = UserPool.getCurrentUser();
-        if (user != null) {
-            console.log(user.getUsername())
-            setIsUserLogged(true);
-            setLoggedUserUsername(user.getUsername())
-        } else {
-            setIsUserLogged(false);
-            setLoggedUserUsername("");
-        }
+    async function getSession() {
+        return await new Promise((resolve, reject) => {
+            const user = UserPool.getCurrentUser();
 
+            if (user) {
+                user.getSession((err: any, session: CognitoUserSession) => {
+                    if (err) {
+                        reject();
+                    } else {
+                        resolve(session);
+                    }
+                });
+            } else {
+                reject();
+            }
+        });
     }
 
-    const onSubmit = (event: React.FormEvent) => {
+    function onSubmit (event: React.FormEvent) {
         event.preventDefault();
 
         const attributesToBeAdded = [
@@ -84,7 +111,7 @@ function LoginPage() {
         )
     }
 
-    const onLogin = (event: React.FormEvent) => {
+    function onLogin (event: React.FormEvent) {
         event.preventDefault();
 
         const user = new CognitoUser({
@@ -102,7 +129,7 @@ function LoginPage() {
                 console.log("onSuccess: ", data);
                 setIsUserLogged(true);
                 const jwtToken = data.getIdToken().getJwtToken();
-                const jwtDecoded:jwtTokenId = jwtDecode(jwtToken);
+                const jwtDecoded:jwtTokenIdType = jwtDecode(jwtToken);
                 console.log(jwtDecoded)
                 console.log(jwtDecoded["cognito:username"])
                 setLoggedUserUsername(jwtDecoded.name)
@@ -128,12 +155,22 @@ function LoginPage() {
 
     }
     
+    async function sendRequestToBackend() {
+        const config = {
+            headers: { Authorization: `Bearer ${idToken}` }
+        };
+
+        const response = await axios.get("http://localhost:8080/api/v1/data", config);
+        console.log(response.data);
+        setMessageFromBackend(response.data);
+    }
+    
     return (
         <div>
             <h1>Welcome at Login page</h1>
 
             {!isUserLogged && (<>
-                <h1>SignUp</h1>
+                <h1>SignUp or LogIn</h1>
 
                 <div>
                     <label htmlFor="cognito-simple__username">Email:</label>
@@ -144,7 +181,6 @@ function LoginPage() {
                     <label htmlFor="cognito-simple__email">Email:</label>
                     <input id="cognito-simple__email" type={"text"} value={email} onChange={(event) => setEmail(event.target.value)}/>
                 </div>
-
 
                 <div>
                     <label htmlFor="cognito-simple__password">Password</label>
@@ -161,7 +197,6 @@ function LoginPage() {
                     <input id="email" type={"text"} value={email} onChange={(event) => setEmail(event.target.value)}/>
                 </div>
 
-
                 <div>
                     <label htmlFor="cognito__password">Password</label>
                     <input id="cognito__password" type={"password"} value={password} onChange={(event) => setPassword(event.target.value)}/>
@@ -173,6 +208,21 @@ function LoginPage() {
                 <h1>Welcome {loggedUserUsername}</h1>
 
                 <button onClick={logout}>Logout</button>
+                
+                <div>
+                    <br/>
+                    <button onClick={sendRequestToBackend}>Send request to backend</button>
+                    <br/>
+                    <br/>
+                    <div>Message from backend = {messageFromBackend}</div>
+                    <br/>
+                    <div>idToken = {idToken}</div>
+                    <br/>
+                    <div>accessToken = {accessToken}</div>
+                    <br/>
+                    <div>refreshToken = {refreshToken}</div>
+                </div>
+                
             </>)}
             
         </div>
