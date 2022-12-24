@@ -5,24 +5,8 @@ import {
     CognitoUserAttribute, CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
-import jwtDecode from "jwt-decode";
 import axios from "axios";
 
-interface jwtTokenIdType {
-    "aud": string,
-    "auth_time": string,
-    "cognito:username" : string,
-    "email": string,
-    "email:verified": string,
-    "event_id": string,
-    "exp": Date,
-    "iat": Date,
-    "iss": string,
-    "jti": string,
-    "name": string,
-    "sub": string,
-    "token_use": string,
-}
 
 function LoginPage() {
     const [username, setUsername] = useState("katzz");
@@ -36,6 +20,10 @@ function LoginPage() {
     const [messageFromBackend, setMessageFromBackend] = useState("");
 
     useEffect(() => {
+        checkLoggedUser();
+    }, [])
+    
+    function checkLoggedUser() {
         getSession()
             .then((session:CognitoUserSession | unknown ) => {
                 console.log(session);
@@ -46,17 +34,17 @@ function LoginPage() {
                     setAccessToken(session.getAccessToken().getJwtToken());
                     setRefreshToken(session.getRefreshToken().getToken());
                 }
-                
+
             }).catch(() => {
-                console.log("user is not logged");
-                setIsUserLogged(false);
-                setLoggedUserUsername("");
-                setIdToken("");
-                setAccessToken("");
-                setRefreshToken("");
-                
+            console.log("user is not logged");
+            setIsUserLogged(false);
+            setLoggedUserUsername("");
+            setIdToken("");
+            setAccessToken("");
+            setRefreshToken("");
+
         });
-    }, [])
+    }
 
     async function getSession() {
         return await new Promise((resolve, reject) => {
@@ -127,12 +115,7 @@ function LoginPage() {
         user.authenticateUser(authDetails, {
             onSuccess: (data) => {
                 console.log("onSuccess: ", data);
-                setIsUserLogged(true);
-                const jwtToken = data.getIdToken().getJwtToken();
-                const jwtDecoded:jwtTokenIdType = jwtDecode(jwtToken);
-                console.log(jwtDecoded)
-                console.log(jwtDecoded["cognito:username"])
-                setLoggedUserUsername(jwtDecoded.name)
+                checkLoggedUser();
             },
             onFailure: (err) => {
                 console.log("on Failure ", err);
@@ -149,6 +132,9 @@ function LoginPage() {
         console.log(user)
         setIsUserLogged(false);
         setLoggedUserUsername("");
+        setAccessToken("");
+        setIdToken("");
+        setRefreshToken("");
         if (user) {
             user.signOut();
         }
