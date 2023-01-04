@@ -138,7 +138,10 @@ function LoginPage() {
         if (user) {
             user.signOut();
         }
-
+    }
+    
+    function copyIdTokenToClipboard() {
+        navigator.clipboard.writeText("Bearer " + idToken);
     }
     
     async function sendRequestToBackend() {
@@ -203,6 +206,7 @@ function LoginPage() {
                     <div>Message from backend = {messageFromBackend}</div>
                     <br/>
                     <div>idToken = {idToken}</div>
+                    <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
                     <br/>
                     <div>accessToken = {accessToken}</div>
                     <br/>
