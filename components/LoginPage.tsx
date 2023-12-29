@@ -5,7 +5,7 @@ import {
     CognitoUserAttribute, CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 
 
 function LoginPage() {
@@ -156,7 +156,8 @@ function LoginPage() {
     }
 
     async function showImageFromBackend() {
-        const config = {
+        const config:AxiosRequestConfig  = {
+            responseType: 'blob',
             headers: {
                 Authorization: `Bearer ${idToken}`
             },
@@ -164,7 +165,7 @@ function LoginPage() {
 
         const response = await axios.get("http://localhost:8080/api/v1/data/image/10", config);
         console.log(response.data);
-        setImageFromBackend(response.data);
+        setImageFromBackend(URL.createObjectURL(response.data));
     }
     
     return (
@@ -221,7 +222,7 @@ function LoginPage() {
                     <br/>
                     <div>Message from backend = {messageFromBackend}</div>
                     <br/>
-                    {imageFromBackend && <img src={"data:image/jpeg;base64," + imageFromBackend} />}
+                    {imageFromBackend && <img src={imageFromBackend} style={{maxWidth: "100%"}} alt={"image from backend"}/>}
                     <br/>
                     <div>idToken = {idToken}</div>
                     <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
