@@ -18,6 +18,7 @@ function LoginPage() {
     const [accessToken, setAccessToken] = useState("");
     const [refreshToken, setRefreshToken] = useState("");
     const [messageFromBackend, setMessageFromBackend] = useState("");
+    const [imageFromBackend, setImageFromBackend] = useState("");
 
     useEffect(() => {
         checkLoggedUser();
@@ -153,6 +154,18 @@ function LoginPage() {
         console.log(response.data);
         setMessageFromBackend(response.data);
     }
+
+    async function showImageFromBackend() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${idToken}`
+            },
+        };
+
+        const response = await axios.get("http://localhost:8080/api/v1/data/image/10", config);
+        console.log(response.data);
+        setImageFromBackend(response.data);
+    }
     
     return (
         <div>
@@ -203,7 +216,12 @@ function LoginPage() {
                     <button onClick={sendRequestToBackend}>Send request to backend</button>
                     <br/>
                     <br/>
+                    <button onClick={showImageFromBackend}>Show image 1 from backend</button>
+                    <br/>
+                    <br/>
                     <div>Message from backend = {messageFromBackend}</div>
+                    <br/>
+                    {imageFromBackend && <img src={"data:image/jpeg;base64," + imageFromBackend} />}
                     <br/>
                     <div>idToken = {idToken}</div>
                     <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
