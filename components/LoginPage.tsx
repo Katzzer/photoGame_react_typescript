@@ -145,13 +145,21 @@ function LoginPage() {
     function copyIdTokenToClipboard() {
         navigator.clipboard.writeText("Bearer " + idToken);
     }
-    
+
+    function copyAccessTokenToClipboard() {
+        navigator.clipboard.writeText("Bearer " + accessToken);
+    }
+
+    function copyRefreshTokenToClipboard() {
+        navigator.clipboard.writeText("Bearer " + refreshToken);
+    }
+
     async function sendRequestToBackend() {
         const config = {
             headers: { Authorization: `Bearer ${idToken}` }
         };
 
-        const response = await axios.get("http://localhost:8080/api/v1/data", config);
+        const response= await axios.get("http://localhost:8080/api/v1/data", config);
         console.log(response.data);
         setMessageFromBackend(response.data);
     }
@@ -283,16 +291,23 @@ function LoginPage() {
                     <button onClick={showImageFromBackend}>Show image 1 from backend</button>
                     <br/>
                     <br/>
-                    <div>Message from backend = {messageFromBackend}</div>
+                    {messageFromBackend && <div>Message from backend = {messageFromBackend}</div>}
                     <br/>
                     {imageFromBackend && <img src={imageFromBackend} style={{maxWidth: "100%"}} alt={"image from backend"}/>}
                     <br/>
-                    <div>idToken = {idToken}</div>
+                    <br/>
+                    <div className={"tokenInfo"}>idToken = {idToken}</div>
                     <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
                     <br/>
-                    <div>accessToken = {accessToken}</div>
                     <br/>
-                    <div>refreshToken = {refreshToken}</div>
+                    <div className={"tokenInfo"}>accessToken = {accessToken}</div>
+                    <button onClick={copyAccessTokenToClipboard}>Copy access token</button>
+                    <br/>
+                    <br/>
+                    <div className={"tokenInfo"}>refreshToken = {refreshToken}</div>
+                    <button onClick={copyRefreshTokenToClipboard}>Copy access token</button>
+                    <br/>
+                    <br/>
                     <br/>
                     <form onSubmit={handleSubmit}>
                         <label>
