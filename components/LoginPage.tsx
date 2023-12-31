@@ -19,6 +19,8 @@ function LoginPage() {
     const [refreshToken, setRefreshToken] = useState("");
     const [messageFromBackend, setMessageFromBackend] = useState("");
     const [imageFromBackend, setImageFromBackend] = useState("");
+    const [uploadedImagePreview, setUploadedImagePreview] = useState("");
+    const [uploadedImage, setUploadedImage] = useState(new Blob());
 
     useEffect(() => {
         checkLoggedUser();
@@ -95,7 +97,6 @@ function LoginPage() {
                     setLoggedUserUsername(data?.user.getUsername())
                 }
 
-               
             }
         )
     }
@@ -163,11 +164,73 @@ function LoginPage() {
             },
         };
 
-        const response = await axios.get("http://localhost:8080/api/v1/data/image/10", config);
+        const response = await axios.get('http://localhost:8080/api/v1/data/image/1', config);
         console.log(response.data);
         setImageFromBackend(URL.createObjectURL(response.data));
     }
-    
+
+    function handleImageUpload(e:any) {
+        let image_as_base64 = URL.createObjectURL(e.target.files[0])
+        let image_as_file = e.target.files[0];
+        setUploadedImage(image_as_file)
+        setUploadedImagePreview(image_as_base64);
+    }
+
+    interface Photo {
+        id?: number,
+        uniqueUserId: String,
+        position: Position
+    }
+
+    interface Position {
+        id?: number,
+        gpsPositionLatitude: number,
+        gpsPositionLongitude: number,
+        city: String,
+        region?: String,
+        locality?: String,
+        country?: String,
+        continent?: String
+    }
+
+    function handleSubmit(e:React.FormEvent) {
+        e.preventDefault();
+
+        const photo:Photo = {
+            uniqueUserId: "123",
+            position: {
+                gpsPositionLatitude: 50,
+                gpsPositionLongitude: 15,
+                city: 'Hradec Kralove'
+            }
+        }
+
+        const photoAsJson = JSON.stringify(photo);
+        const blob = new Blob([photoAsJson], {
+            type: 'application/json'
+        });
+
+        let formData = new FormData();
+        formData.append('imageFile', uploadedImage);
+        formData.append('photo', blob);
+
+        axios.post('http://localhost:8080/api/v1/data',
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    "Content-type": "multipart/form-data",
+                },
+            }
+        )
+            .then(res => {
+                console.log(`Success` + res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     return (
         <div>
             <h1>Welcome at Login page</h1>
@@ -230,6 +293,28 @@ function LoginPage() {
                     <div>accessToken = {accessToken}</div>
                     <br/>
                     <div>refreshToken = {refreshToken}</div>
+                    <br/>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Name:
+                            <input type="text" name="photo" />
+                        </label>
+
+                        <br/>
+
+                        {uploadedImagePreview && <img src={uploadedImagePreview} alt="image preview"/>}
+
+                        <br/>
+
+                        <label>
+                            Name:
+                            <input type="file" name="inputFile" onChange={handleImageUpload} />
+                        </label>
+
+                        <br/>
+
+                        <input type="submit" value="Submit" />
+                    </form>
                 </div>
                 
             </>)}
