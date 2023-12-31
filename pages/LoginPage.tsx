@@ -6,6 +6,7 @@ import {
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
 import axios, {AxiosRequestConfig} from "axios";
+import {NavLink} from "react-router-dom";
 
 
 function LoginPage() {
@@ -240,8 +241,14 @@ function LoginPage() {
     }
 
     return (
-        <div>
+        <div className={"login-page_wrapper"}>
             <h1>Welcome at Login page</h1>
+
+            <div className="mainPage__link-wrapper">
+                <div className="link-wrapper">
+                    <NavLink to={"/aaa"}>To do - simple To Do list (create / delete)</NavLink>
+                </div>
+            </div>
 
             {!isUserLogged && (<>
                 <h1>SignUp or LogIn</h1>

@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Header from "../components/Header";
-import NotFoundPage from "../components/NotFoundPage";
-import LoginPage from "../components/LoginPage";
+import Header from "../pages/components/Header";
+import NotFoundPage from "../pages/NotFoundPage";
+import LoginPage from "../pages/LoginPage";
 
 function Router() {
     return (
