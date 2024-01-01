@@ -21,8 +21,13 @@ function LoginPage() {
     const [refreshToken, setRefreshToken] = useState("");
     const [messageFromBackend, setMessageFromBackend] = useState("");
     const [imageFromBackend, setImageFromBackend] = useState("");
+    const [imageThumbnailFromBackend, setImageThumbnailFromBackend] = useState("");
     const [uploadedImagePreview, setUploadedImagePreview] = useState("");
     const [uploadedImage, setUploadedImage] = useState(new Blob());
+
+    // TODO: only for testing:
+    const imageIdToShow:number = 25;
+    const textImageIdToShow = `Show image ${imageIdToShow} from backend`;
 
     useEffect(() => {
         checkLoggedUser();
@@ -166,6 +171,11 @@ function LoginPage() {
         setMessageFromBackend(response.data);
     }
 
+    function showImageWithThumbnailFromBackend() {
+        showImageFromBackend();
+        showImageThumbnailFromBackend();
+    }
+
     async function showImageFromBackend() {
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
@@ -174,9 +184,22 @@ function LoginPage() {
             },
         };
 
-        const response = await axios.get('http://localhost:8080/api/v1/data/image/4', config);
+        const response = await axios.get("http://localhost:8080/api/v1/data/image/" + imageIdToShow, config);
         console.log(response.data);
         setImageFromBackend(URL.createObjectURL(response.data));
+    }
+
+    async function showImageThumbnailFromBackend() {
+        const config:AxiosRequestConfig  = {
+            responseType: 'blob',
+            headers: {
+                Authorization: `Bearer ${idToken}`
+            },
+        };
+
+        const response = await axios.get("http://localhost:8080/api/v1/data/image/thumbnail/" + imageIdToShow, config);
+        console.log(response.data);
+        setImageThumbnailFromBackend(URL.createObjectURL(response.data));
     }
 
     function handleImageUpload(e:any) {
@@ -288,10 +311,12 @@ function LoginPage() {
                     <button onClick={sendRequestToBackend}>Send request to backend</button>
                     <br/>
                     <br/>
-                    <button onClick={showImageFromBackend}>Show image 1 from backend</button>
+                    <button onClick={showImageWithThumbnailFromBackend}>{textImageIdToShow}</button>
                     <br/>
                     <br/>
                     {messageFromBackend && <div>Message from backend = {messageFromBackend}</div>}
+                    <br/>
+                    {imageThumbnailFromBackend && <img src={imageThumbnailFromBackend} style={{maxWidth: "100%"}} alt={"image thumbnail from backend"}/>}
                     <br/>
                     {imageFromBackend && <img src={imageFromBackend} style={{maxWidth: "100%"}} alt={"image from backend"}/>}
                     <br/>
