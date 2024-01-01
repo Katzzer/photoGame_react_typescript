@@ -7,6 +7,7 @@ import {
 import UserPool from "../security/data/UserPool"
 import axios, {AxiosRequestConfig} from "axios";
 import {NavLink} from "react-router-dom";
+import {Pages} from "../tools/RouterEnum";
 
 
 function LoginPage() {
@@ -246,7 +247,7 @@ function LoginPage() {
 
             <div className="mainPage__link-wrapper">
                 <div className="link-wrapper">
-                    <NavLink to={"/aaa"}>To do - simple To Do list (create / delete)</NavLink>
+                    <NavLink to={Pages.ROOT}>To do - simple To Do list (create / delete)</NavLink>
                 </div>
             </div>
 
