@@ -174,7 +174,7 @@ function LoginPage() {
             },
         };
 
-        const response = await axios.get('http://localhost:8080/api/v1/data/image/1', config);
+        const response = await axios.get('http://localhost:8080/api/v1/data/image/4', config);
         console.log(response.data);
         setImageFromBackend(URL.createObjectURL(response.data));
     }
@@ -188,15 +188,10 @@ function LoginPage() {
 
     interface Photo {
         id?: number,
-        uniqueUserId: String,
-        position: Position
-    }
-
-    interface Position {
-        id?: number,
+        photoOwner?: String,
         gpsPositionLatitude: number,
         gpsPositionLongitude: number,
-        city: String,
+        city?: String,
         region?: String,
         locality?: String,
         country?: String,
@@ -207,12 +202,9 @@ function LoginPage() {
         e.preventDefault();
 
         const photo:Photo = {
-            uniqueUserId: "123",
-            position: {
-                gpsPositionLatitude: 50,
-                gpsPositionLongitude: 15,
-                city: 'Hradec Kralove'
-            }
+            gpsPositionLatitude: 50,
+            gpsPositionLongitude: 15,
+            city: 'Hradec Kralove'
         }
 
         const photoAsJson = JSON.stringify(photo);
@@ -247,7 +239,7 @@ function LoginPage() {
 
             <div className="mainPage__link-wrapper">
                 <div className="link-wrapper">
-                    <NavLink to={Pages.ROOT}>To do - simple To Do list (create / delete)</NavLink>
+                    <NavLink to={Pages.ROOT}>To do - Just testing Link</NavLink>
                 </div>
             </div>
 
@@ -325,7 +317,11 @@ function LoginPage() {
 
                         <br/>
 
-                        {uploadedImagePreview && <img src={uploadedImagePreview} alt="image preview"/>}
+                        {uploadedImagePreview &&
+                            <div className={"image_preview"}>
+                                <img src={uploadedImagePreview} alt="image preview"/>
+                            </div>
+                        }
 
                         <br/>
 
