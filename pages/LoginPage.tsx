@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {
     CognitoUser,
     AuthenticationDetails,
@@ -6,19 +6,17 @@ import {
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
 import axios, {AxiosRequestConfig} from "axios";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {Pages} from "../tools/RouterEnum";
+import {ActionType, initialState, State} from "../model/token.model";
+import {tokenReducer} from "../reducer/tokenReducer";
 
 
 function LoginPage() {
+    const [state, dispatch] = useReducer(tokenReducer, initialState);
     const [username, setUsername] = useState("katzz");
     const [email, setEmail] = useState("katzz@seznam.cz");
     const [password, setPassword] = useState("Monitor11!");
-    const [isUserLogged, setIsUserLogged] = useState(false);
-    const [loggedUserUsername, setLoggedUserUsername] = useState("");
-    const [idToken, setIdToken] = useState("");
-    const [accessToken, setAccessToken] = useState("");
-    const [refreshToken, setRefreshToken] = useState("");
     const [messageFromBackend, setMessageFromBackend] = useState("");
     const [imageFromBackend, setImageFromBackend] = useState("");
     const [imageThumbnailFromBackend, setImageThumbnailFromBackend] = useState("");
@@ -30,28 +28,28 @@ function LoginPage() {
     const textImageIdToShow = `Show image ${imageIdToShow} from backend`;
 
     useEffect(() => {
-        checkLoggedUser();
+        checkLoggedUser(); // TODO: maybe delete
     }, [])
-    
+
     function checkLoggedUser() {
         getSession()
-            .then((session:CognitoUserSession | unknown ) => {
+            .then((session: CognitoUserSession | unknown) => {
                 console.log(session);
                 if (session instanceof CognitoUserSession) {
                     setIsUserLogged(true);
                     setLoggedUserUsername(session.getAccessToken().payload.username);
-                    setIdToken(session.getIdToken().getJwtToken());
-                    setAccessToken(session.getAccessToken().getJwtToken());
-                    setRefreshToken(session.getRefreshToken().getToken());
+                    setIdToken({idToken: session.getIdToken().getJwtToken()});
+                    setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
+                    setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
                 }
 
             }).catch(() => {
             console.log("user is not logged");
             setIsUserLogged(false);
             setLoggedUserUsername("");
-            setIdToken("");
-            setAccessToken("");
-            setRefreshToken("");
+            setIdToken({idToken: null})
+            setAccessToken({accessToken: null})
+            setRefreshToken({refreshToken: null})
 
         });
     }
@@ -140,30 +138,86 @@ function LoginPage() {
         const user = UserPool.getCurrentUser();
         console.log(user)
         setIsUserLogged(false);
-        setLoggedUserUsername("");
-        setAccessToken("");
-        setIdToken("");
-        setRefreshToken("");
+        setLoggedUserUsername(null);
+        setIdToken({idToken: null})
+        setAccessToken({accessToken: null})
+        setRefreshToken({refreshToken: null})
         if (user) {
             user.signOut();
         }
     }
+
+    function setIdToken(tokens: Partial<State>) {
+
+        // Merge with the current state so only provided tokens are changed
+        dispatch({
+            type: ActionType.SET_ID_TOKEN,
+            payload: {
+                ...state,
+                ...tokens
+            }
+        });
+    }
+
+    function setAccessToken(tokens: Partial<State>) {
+
+        // Merge with the current state so only provided tokens are changed
+        dispatch({
+            type: ActionType.SET_ACCESS_TOKEN,
+            payload: {
+                ...state,
+                ...tokens
+            }
+        });
+    }
+
+    function setRefreshToken(tokens: Partial<State>) {
+
+        // Merge with the current state so only provided tokens are changed
+        dispatch({
+            type: ActionType.SET_REFRESH_TOKEN,
+            payload: {
+                ...state,
+                ...tokens
+            }
+        });
+    }
+
+    function setLoggedUserUsername(loggedUserUsername: string | null) {
+        dispatch({
+            type: ActionType.SET_USER_USERNAME,
+            payload: {
+                ...state,
+                loggedUserUsername: loggedUserUsername
+            }
+        });
+    }
+
+    function setIsUserLogged(isUserLogged: boolean) {
+        dispatch({
+            type: ActionType.SET_IS_USER_LOGGED,
+            payload: {
+                ...state,
+                isUserLogged: isUserLogged
+            }
+        });
+    }
     
     function copyIdTokenToClipboard() {
-        navigator.clipboard.writeText("Bearer " + idToken);
+        navigator.clipboard.writeText("Bearer " + state.idToken);
     }
 
     function copyAccessTokenToClipboard() {
-        navigator.clipboard.writeText("Bearer " + accessToken);
+        navigator.clipboard.writeText("Bearer " + state.accessToken);
     }
 
     function copyRefreshTokenToClipboard() {
-        navigator.clipboard.writeText("Bearer " + refreshToken);
+        navigator.clipboard.writeText("Bearer " + state.refreshToken);
     }
 
     async function sendRequestToBackend() {
         const config = {
-            headers: { Authorization: `Bearer ${idToken}` }
+            headers: { Authorization: `Bearer ${state.idToken}` }
         };
 
         const response= await axios.get("http://localhost:8080/api/v1/data", config);
@@ -180,7 +234,7 @@ function LoginPage() {
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
             headers: {
-                Authorization: `Bearer ${idToken}`
+                Authorization: `Bearer ${state.idToken}`
             },
         };
 
@@ -193,7 +247,7 @@ function LoginPage() {
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
             headers: {
-                Authorization: `Bearer ${idToken}`
+                Authorization: `Bearer ${state.idToken}`
             },
         };
 
@@ -243,7 +297,7 @@ function LoginPage() {
             formData,
             {
                 headers: {
-                    Authorization: `Bearer ${idToken}`,
+                    Authorization: `Bearer ${state.idToken}`,
                     "Content-type": "multipart/form-data",
                 },
             }
@@ -266,7 +320,7 @@ function LoginPage() {
                 </div>
             </div>
 
-            {!isUserLogged && (<>
+            {!state.isUserLogged && (<>
                 <h1>SignUp or LogIn</h1>
 
                 <div>
@@ -301,8 +355,8 @@ function LoginPage() {
                 <button onClick={onLogin}>LogIn</button>
             </>)}
 
-            {isUserLogged && (<>
-                <h1>Welcome {loggedUserUsername}</h1>
+            {state.isUserLogged && (<>
+                <h1>Welcome {state.loggedUserUsername}</h1>
 
                 <button onClick={logout}>Logout</button>
                 
@@ -321,15 +375,15 @@ function LoginPage() {
                     {imageFromBackend && <img src={imageFromBackend} style={{maxWidth: "100%"}} alt={"image from backend"}/>}
                     <br/>
                     <br/>
-                    <div className={"tokenInfo"}>idToken = {idToken}</div>
+                    <div className={"tokenInfo"}>idToken = {state.idToken}</div>
                     <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
                     <br/>
                     <br/>
-                    <div className={"tokenInfo"}>accessToken = {accessToken}</div>
+                    <div className={"tokenInfo"}>accessToken = {state.accessToken}</div>
                     <button onClick={copyAccessTokenToClipboard}>Copy access token</button>
                     <br/>
                     <br/>
-                    <div className={"tokenInfo"}>refreshToken = {refreshToken}</div>
+                    <div className={"tokenInfo"}>refreshToken = {state.refreshToken}</div>
                     <button onClick={copyRefreshTokenToClipboard}>Copy access token</button>
                     <br/>
                     <br/>
@@ -337,7 +391,7 @@ function LoginPage() {
                     <form onSubmit={handleSubmit}>
                         <label>
                             Name:
-                            <input type="text" name="photo" />
+                            <input type="text" name="photo"/>
                         </label>
 
                         <br/>
@@ -352,17 +406,27 @@ function LoginPage() {
 
                         <label>
                             Name:
-                            <input type="file" name="inputFile" onChange={handleImageUpload} />
+                            <input type="file" name="inputFile" onChange={handleImageUpload}/>
                         </label>
 
                         <br/>
 
-                        <input type="submit" value="Submit" />
+                        <input type="submit" value="Submit"/>
+
+                        <br/>
+                        <br/>
+
+                        <div className="mainPage__link-wrapper">
+                            <div className="link-wrapper">
+                                <Link className="button" to={Pages.ALL_PHOTOS}>Show all your photos</Link>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
-                
+
             </>)}
-            
+
         </div>
     );
 }

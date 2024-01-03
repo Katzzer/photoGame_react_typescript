@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import {Pages} from "../tools/RouterEnum";
 
 const NotFoundPage = () => (
     <div className="flex-container">
@@ -10,7 +11,7 @@ const NotFoundPage = () => (
                 <span className="fade-in" id="digit3">4</span>
             </h1>
             <h3 className="fadeIn">PAGE NOT FOUND</h3>
-            <Link className="button" to="/">Go to main page</Link>
+            <Link className="button" to={Pages.HOME}>Go to main page</Link>
         </div>
     </div>
 );
