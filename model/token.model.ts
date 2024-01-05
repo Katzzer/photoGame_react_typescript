@@ -10,7 +10,7 @@ export interface State {
     idToken: string | null;
     accessToken: string | null;
     refreshToken: string | null;
-    isUserLogged: boolean,
+    isUserLogged: boolean | null,
     loggedUserUsername: string | null
 }
 
@@ -18,6 +18,6 @@ export const initialState: State = {
     idToken: null,
     accessToken: null,
     refreshToken: null,
-    isUserLogged: false,
+    isUserLogged: null,
     loggedUserUsername: null
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useContext, useEffect, useReducer, useState} from 'react';
 import {
     CognitoUser,
     AuthenticationDetails,
@@ -9,11 +9,12 @@ import axios, {AxiosRequestConfig} from "axios";
 import {Link, NavLink} from "react-router-dom";
 import {Pages} from "../tools/RouterEnum";
 import {ActionType, initialState, State} from "../model/token.model";
-import {tokenReducer} from "../reducer/tokenReducer";
+import getSessionAndVerify from "../security/auth";
+import TokenContext from "../context/token-context";
 
 
 function LoginPage() {
-    const [state, dispatch] = useReducer(tokenReducer, initialState);
+    const [state, dispatch] = useContext(TokenContext);
     const [username, setUsername] = useState("katzz");
     const [email, setEmail] = useState("katzz@seznam.cz");
     const [password, setPassword] = useState("Monitor11!");
@@ -28,30 +29,26 @@ function LoginPage() {
     const textImageIdToShow = `Show image ${imageIdToShow} from backend`;
 
     useEffect(() => {
-        checkLoggedUser(); // TODO: maybe delete
+        checkLoggedUser123(); // TODO: maybe delete
     }, [])
 
-    function checkLoggedUser() {
-        getSession()
-            .then((session: CognitoUserSession | unknown) => {
-                console.log(session);
-                if (session instanceof CognitoUserSession) {
-                    setIsUserLogged(true);
-                    setLoggedUserUsername(session.getAccessToken().payload.username);
-                    setIdToken({idToken: session.getIdToken().getJwtToken()});
-                    setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
-                    setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
-                }
-
-            }).catch(() => {
+    async function checkLoggedUser123() {
+        const session = await getSessionAndVerify();
+        if (session) {
+            setIsUserLogged(true);
+            setLoggedUserUsername(session.getAccessToken().payload.username);
+            setIdToken({idToken: session.getIdToken().getJwtToken()});
+            setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
+            setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
+        } else {
             console.log("user is not logged");
+            debugger;
             setIsUserLogged(false);
             setLoggedUserUsername("");
             setIdToken({idToken: null})
             setAccessToken({accessToken: null})
             setRefreshToken({refreshToken: null})
-
-        });
+        }
     }
 
     async function getSession() {
@@ -122,7 +119,7 @@ function LoginPage() {
         user.authenticateUser(authDetails, {
             onSuccess: (data) => {
                 console.log("onSuccess: ", data);
-                checkLoggedUser();
+                checkLoggedUser123();
             },
             onFailure: (err) => {
                 console.log("on Failure ", err);
@@ -137,6 +134,7 @@ function LoginPage() {
         console.log("logging user out")
         const user = UserPool.getCurrentUser();
         console.log(user)
+        debugger;
         setIsUserLogged(false);
         setLoggedUserUsername(null);
         setIdToken({idToken: null})

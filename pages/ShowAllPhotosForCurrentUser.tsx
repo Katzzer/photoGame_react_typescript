@@ -1,31 +1,81 @@
-import React, {useReducer} from 'react';
-import {Link} from "react-router-dom";
+import React, {useContext, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from "axios";
-import {Pages} from "../tools/RouterEnum";
+import TokenContext from "../context/token-context";
 
-const ShowAllPhotosFroCurrentUser = () => {
+// TODO duplicate code, move it somewhere else
+interface Photo {
+    id?: number,
+    photoOwner?: String,
+    gpsPositionLatitude: number,
+    gpsPositionLongitude: number,
+    city?: String,
+    region?: String,
+    locality?: String,
+    country?: String,
+    continent?: String
+}
+
+function ShowAllPhotosFroCurrentUser() {
+    const [state, _] = useContext(TokenContext);
+    const [listOfPhotos, setListOfPhotos] = useState<Photo[]>([]);
+    const [listOfImageBlobs, setListOfImageBlobs] = useState<(string | undefined)[]>([]);
+
+    useEffect(() => {
+        getListOfPhotosForCurrentUser();
+    }, []);
+
+    useEffect(() => {
+        async function fetchPhotos() {
+            try {
+                // const fetchedImages = await Promise.all(listOfPhotos.map(photo => getImageThumbnailFromBackend(photo.id)));
+                listOfPhotos.map(photo => getImageThumbnailFromBackend(photo.id));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchPhotos();
+    }, [listOfPhotos]);
+
+    async function getImageThumbnailFromBackend(id:number | undefined): Promise<string | undefined> {
+        const config: AxiosRequestConfig = {
+            responseType: 'blob',
+            headers: {
+                Authorization: `Bearer ${state.idToken}`
+            },
+        };
+
+        const response = await axios.get("http://localhost:8080/api/v1/data/image/thumbnail/" + id, config);
+        if (response.data) {
+            const image = URL.createObjectURL(response.data);
+            setListOfImageBlobs(prevState => [...prevState, image])
+        }
+
+        return undefined;
+
+    }
 
     async function getListOfPhotosForCurrentUser() {
+        setListOfImageBlobs([]);
         const config:AxiosRequestConfig  = {
             headers: {
-                Authorization: `Bearer ${"idToken"}` // TODO: make dynamic
+                Authorization: `Bearer ${state.idToken}`
             },
         };
         const response = await axios.get("http://localhost:8080/api/v1/data/images", config);
+        setListOfPhotos(response.data);
     }
 
     return (
         <div className="">
             <div className="text-center">
                 <button onClick={getListOfPhotosForCurrentUser}>Reload data</button>
-                <div className="mainPage__link-wrapper">
-                    <div className="link-wrapper">
-                        <Link className="button" to={Pages.ALL_PHOTOS}>Go to main page</Link>
-                    </div>
-                </div>
+                {listOfPhotos && listOfPhotos.map(photo => <div key={photo.id}>{photo.id}</div>)}
+                {listOfPhotos && listOfImageBlobs.map(image => <img src={image} alt={"aaa"}/>)}
             </div>
         </div>
     );
 
-};
+}
+
 export default ShowAllPhotosFroCurrentUser;
