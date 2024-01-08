@@ -1,17 +1,6 @@
 import UserPool from "./data/UserPool";
 import {CognitoUserSession} from "amazon-cognito-identity-js";
 
-// export async function isValidSession() {
-//     try{
-//         const session = await getSession();
-//         debugger;
-//         return Boolean(session);
-//     } catch(error) {
-//         console.error(error);
-//         return false;
-//     }
-// }
-
 export default async function getSessionAndVerify(): Promise<CognitoUserSession | null> {
     try {
         const session = await getSession();
@@ -22,7 +11,6 @@ export default async function getSessionAndVerify(): Promise<CognitoUserSession 
             return null;
         }
     } catch (err) {
-        // console.error('Failed to verify session:', err);
         return null;
     }
 

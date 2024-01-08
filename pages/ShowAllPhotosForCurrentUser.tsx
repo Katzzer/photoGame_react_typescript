@@ -49,7 +49,18 @@ function ShowAllPhotosFroCurrentUser() {
         const response = await axios.get("http://localhost:8080/api/v1/data/image/thumbnail/" + photo.id, config);
         if (response.data) {
             photo.image = URL.createObjectURL(response.data);
-            setListOfPhotosWithImage(prevState => [...prevState, photo]);
+            setListOfPhotosWithImage(prevState => {
+                // Check if photo with same id already exists in the prevState
+                const doesExist = prevState.some(existingPhoto => existingPhoto.id === photo.id);
+
+                if (!doesExist) {
+                    // If the photo doesn't exist, add it to the prevState
+                    return [...prevState, photo];
+                } else {
+                    // If the photo does exist, return the prevState as is
+                    return prevState;
+                }
+            });
         }
 
         return undefined;
