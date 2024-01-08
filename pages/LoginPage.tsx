@@ -1,20 +1,28 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react';
+import React, {useContext,  useState} from 'react';
 import {
     CognitoUser,
     AuthenticationDetails,
-    CognitoUserAttribute, CognitoUserSession,
+    CognitoUserAttribute,
 } from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool"
 import axios, {AxiosRequestConfig} from "axios";
 import {Link, NavLink} from "react-router-dom";
 import {Pages} from "../tools/RouterEnum";
-import {ActionType, initialState, State} from "../model/token.model";
 import getSessionAndVerify from "../security/auth";
 import TokenContext from "../context/token-context";
+import {State} from "../model/token.model";
+
+interface PropsType {
+    setIsUserLogged: (isUserLogged: boolean) => void
+    setLoggedUserUsername: (loggedUserUsername: string | null) => void
+    setIdToken: (tokens: Partial<State>) => void
+    setAccessToken: (tokens: Partial<State>) => void
+    setRefreshToken: (tokens: Partial<State>) => void
+}
 
 
-function LoginPage() {
-    const [state, dispatch] = useContext(TokenContext);
+function LoginPage(props:PropsType) {
+    const [state, _] = useContext(TokenContext);
     const [username, setUsername] = useState("katzz");
     const [email, setEmail] = useState("katzz@seznam.cz");
     const [password, setPassword] = useState("Monitor11!");
@@ -25,48 +33,26 @@ function LoginPage() {
     const [uploadedImage, setUploadedImage] = useState(new Blob());
 
     // TODO: only for testing:
-    const imageIdToShow:number = 25;
+    const imageIdToShow:number = 30;
     const textImageIdToShow = `Show image ${imageIdToShow} from backend`;
 
-    useEffect(() => {
-        checkLoggedUser123(); // TODO: maybe delete
-    }, [])
-
-    async function checkLoggedUser123() {
-        const session = await getSessionAndVerify();
-        if (session) {
-            setIsUserLogged(true);
-            setLoggedUserUsername(session.getAccessToken().payload.username);
-            setIdToken({idToken: session.getIdToken().getJwtToken()});
-            setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
-            setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
-        } else {
-            console.log("user is not logged");
-            debugger;
-            setIsUserLogged(false);
-            setLoggedUserUsername("");
-            setIdToken({idToken: null})
-            setAccessToken({accessToken: null})
-            setRefreshToken({refreshToken: null})
-        }
-    }
-
-    async function getSession() {
-        return await new Promise((resolve, reject) => {
-            const user = UserPool.getCurrentUser();
-
-            if (user) {
-                user.getSession((err: any, session: CognitoUserSession) => {
-                    if (err) {
-                        reject();
-                    } else {
-                        resolve(session);
-                    }
-                });
+    async function checkLoggedUser() {
+        getSessionAndVerify().then(session => {
+            if (session) {
+                props.setIsUserLogged(true);
+                props.setLoggedUserUsername(session.getAccessToken().payload.username);
+                props.setIdToken({idToken: session.getIdToken().getJwtToken()});
+                props.setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
+                props.setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
             } else {
-                reject();
+                console.log("user is not logged");
+                props.setIsUserLogged(false);
+                props.setLoggedUserUsername("");
+                props.setIdToken({idToken: null})
+                props.setAccessToken({accessToken: null})
+                props.setRefreshToken({refreshToken: null})
             }
-        });
+        })
     }
 
     function onSubmit (event: React.FormEvent) {
@@ -83,7 +69,6 @@ function LoginPage() {
             },
         ];
 
-
         const attrList: Array<CognitoUserAttribute> = attributesToBeAdded.map(
             attr => {
                 return new CognitoUserAttribute(attr);
@@ -95,8 +80,8 @@ function LoginPage() {
                     console.log(err)
                 } else if (data?.user) {
                     console.log(data);
-                    setIsUserLogged(true);
-                    setLoggedUserUsername(data?.user.getUsername())
+                    props.setIsUserLogged(true);
+                    props.setLoggedUserUsername(data?.user.getUsername())
                 }
 
             }
@@ -119,7 +104,7 @@ function LoginPage() {
         user.authenticateUser(authDetails, {
             onSuccess: (data) => {
                 console.log("onSuccess: ", data);
-                checkLoggedUser123();
+                checkLoggedUser();
             },
             onFailure: (err) => {
                 console.log("on Failure ", err);
@@ -135,72 +120,16 @@ function LoginPage() {
         const user = UserPool.getCurrentUser();
         console.log(user)
         debugger;
-        setIsUserLogged(false);
-        setLoggedUserUsername(null);
-        setIdToken({idToken: null})
-        setAccessToken({accessToken: null})
-        setRefreshToken({refreshToken: null})
+        props.setIsUserLogged(false);
+        props.setLoggedUserUsername(null);
+        props.setIdToken({idToken: null})
+        props.setAccessToken({accessToken: null})
+        props.setRefreshToken({refreshToken: null})
         if (user) {
             user.signOut();
         }
     }
 
-    function setIdToken(tokens: Partial<State>) {
-
-        // Merge with the current state so only provided tokens are changed
-        dispatch({
-            type: ActionType.SET_ID_TOKEN,
-            payload: {
-                ...state,
-                ...tokens
-            }
-        });
-    }
-
-    function setAccessToken(tokens: Partial<State>) {
-
-        // Merge with the current state so only provided tokens are changed
-        dispatch({
-            type: ActionType.SET_ACCESS_TOKEN,
-            payload: {
-                ...state,
-                ...tokens
-            }
-        });
-    }
-
-    function setRefreshToken(tokens: Partial<State>) {
-
-        // Merge with the current state so only provided tokens are changed
-        dispatch({
-            type: ActionType.SET_REFRESH_TOKEN,
-            payload: {
-                ...state,
-                ...tokens
-            }
-        });
-    }
-
-    function setLoggedUserUsername(loggedUserUsername: string | null) {
-        dispatch({
-            type: ActionType.SET_USER_USERNAME,
-            payload: {
-                ...state,
-                loggedUserUsername: loggedUserUsername
-            }
-        });
-    }
-
-    function setIsUserLogged(isUserLogged: boolean) {
-        dispatch({
-            type: ActionType.SET_IS_USER_LOGGED,
-            payload: {
-                ...state,
-                isUserLogged: isUserLogged
-            }
-        });
-    }
-    
     function copyIdTokenToClipboard() {
         navigator.clipboard.writeText("Bearer " + state.idToken);
     }
