@@ -10,14 +10,13 @@ import {Link, NavLink} from "react-router-dom";
 import {Pages} from "../tools/RouterEnum";
 import getSessionAndVerify from "../security/auth";
 import TokenContext from "../context/token-context";
-import {State} from "../model/token.model";
+import {ActionType, State} from "../model/token.model";
+import {Photo} from "../common/types";
 
 interface PropsType {
     setIsUserLogged: (isUserLogged: boolean) => void
     setLoggedUserUsername: (loggedUserUsername: string | null) => void
-    setIdToken: (tokens: Partial<State>) => void
-    setAccessToken: (tokens: Partial<State>) => void
-    setRefreshToken: (tokens: Partial<State>) => void
+    setToken: (actionType: ActionType, tokens: Partial<State>) => void
 }
 
 
@@ -41,16 +40,16 @@ function LoginPage(props:PropsType) {
             if (session) {
                 props.setIsUserLogged(true);
                 props.setLoggedUserUsername(session.getAccessToken().payload.username);
-                props.setIdToken({idToken: session.getIdToken().getJwtToken()});
-                props.setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
-                props.setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
+                props.setToken(ActionType.SET_ID_TOKEN, {idToken: session.getIdToken().getJwtToken()});
+                props.setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: session.getAccessToken().getJwtToken()});
+                props.setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: session.getRefreshToken().getToken()});
             } else {
                 console.log("user is not logged");
                 props.setIsUserLogged(false);
                 props.setLoggedUserUsername("");
-                props.setIdToken({idToken: null})
-                props.setAccessToken({accessToken: null})
-                props.setRefreshToken({refreshToken: null})
+                props.setToken(ActionType.SET_ID_TOKEN, {idToken: null})
+                props.setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: null})
+                props.setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: null})
             }
         })
     }
@@ -119,12 +118,11 @@ function LoginPage(props:PropsType) {
         console.log("logging user out")
         const user = UserPool.getCurrentUser();
         console.log(user)
-        debugger;
         props.setIsUserLogged(false);
         props.setLoggedUserUsername(null);
-        props.setIdToken({idToken: null})
-        props.setAccessToken({accessToken: null})
-        props.setRefreshToken({refreshToken: null})
+        props.setToken(ActionType.SET_ID_TOKEN, {idToken: null})
+        props.setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: null})
+        props.setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: null})
         if (user) {
             user.signOut();
         }
@@ -188,18 +186,6 @@ function LoginPage(props:PropsType) {
         let image_as_file = e.target.files[0];
         setUploadedImage(image_as_file)
         setUploadedImagePreview(image_as_base64);
-    }
-
-    interface Photo {
-        id?: number,
-        photoOwner?: String,
-        gpsPositionLatitude: number,
-        gpsPositionLongitude: number,
-        city?: String,
-        region?: String,
-        locality?: String,
-        country?: String,
-        continent?: String
     }
 
     function handleSubmit(e:React.FormEvent) {

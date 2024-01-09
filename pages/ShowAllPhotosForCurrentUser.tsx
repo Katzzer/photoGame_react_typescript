@@ -1,20 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
-
-// TODO duplicate code, move it somewhere else
-interface Photo {
-    id?: number,
-    photoOwner?: String,
-    gpsPositionLatitude: number,
-    gpsPositionLongitude: number,
-    city?: String,
-    region?: String,
-    locality?: String,
-    country?: String,
-    continent?: String
-    image?: string | undefined
-}
+import {Photo} from "../common/types";
 
 function ShowAllPhotosFroCurrentUser() {
     const [state, _] = useContext(TokenContext);

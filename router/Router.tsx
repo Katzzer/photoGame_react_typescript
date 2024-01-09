@@ -26,51 +26,25 @@ function Router() {
             if (session) {
                 setIsUserLogged(true);
                 setLoggedUserUsername(session.getAccessToken().payload.username);
-                setIdToken({idToken: session.getIdToken().getJwtToken()});
-                setAccessToken({accessToken: session.getAccessToken().getJwtToken()});
-                setRefreshToken({refreshToken: session.getRefreshToken().getToken()});
+                setToken(ActionType.SET_ID_TOKEN, {idToken: session.getIdToken().getJwtToken()});
+                setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: session.getAccessToken().getJwtToken()});
+                setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: session.getRefreshToken().getToken()});
             } else {
                 console.log("user is not logged");
                 setIsUserLogged(false);
                 setLoggedUserUsername("");
-                setIdToken({idToken: null})
-                setAccessToken({accessToken: null})
-                setRefreshToken({refreshToken: null})
+                setToken(ActionType.SET_ID_TOKEN,{idToken: null})
+                setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: null})
+                setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: null})
             }
         })
 
     }
 
-    // TODO: refactor, don´t use Partial<State> but use String
-    function setIdToken(tokens: Partial<State>) {
-
+    function setToken(type: ActionType, tokens: Partial<State>) {
         // Merge with the current state so only provided tokens are changed
         dispatch({
-            type: ActionType.SET_ID_TOKEN,
-            payload: {
-                ...state,
-                ...tokens
-            }
-        });
-    }
-
-    function setAccessToken(tokens: Partial<State>) {
-
-        // Merge with the current state so only provided tokens are changed
-        dispatch({
-            type: ActionType.SET_ACCESS_TOKEN,
-            payload: {
-                ...state,
-                ...tokens
-            }
-        });
-    }
-
-    function setRefreshToken(tokens: Partial<State>) {
-
-        // Merge with the current state so only provided tokens are changed
-        dispatch({
-            type: ActionType.SET_REFRESH_TOKEN,
+            type: type,
             payload: {
                 ...state,
                 ...tokens
@@ -109,9 +83,7 @@ function Router() {
                            <LoginPage
                                setIsUserLogged={setIsUserLogged}
                                setLoggedUserUsername={setLoggedUserUsername}
-                               setIdToken={setIdToken}
-                               setAccessToken={setAccessToken}
-                               setRefreshToken={setRefreshToken}
+                               setToken={setToken}
                            />}
                 />
 
