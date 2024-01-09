@@ -18,10 +18,10 @@ function Router() {
     const [state, dispatch] = useReducer(tokenReducer, initialState);
 
     useEffect(() => {
-        checkLoggedUser();
+        checkIfUserIsLogged();
     }, []);
 
-    function checkLoggedUser() {
+    function checkIfUserIsLogged() {
         getSessionAndVerify().then(session => {
             if (session) {
                 setIsUserLogged(true);
@@ -89,7 +89,9 @@ function Router() {
 
                 <Route path={Pages.ALL_PHOTOS} element={
                     <ProtectedRoute>
-                        <ShowAllPhotosForCurrentUser />
+                        <ShowAllPhotosForCurrentUser
+                            checkIfUserIsLogged={checkIfUserIsLogged}
+                        />
                     </ProtectedRoute>
                 }/>
 
@@ -111,7 +113,7 @@ function ProtectedRoute ({ children }: ProtectedRouteProps): JSX.Element {
     if (state.isUserLogged) {
         return children;
     } else {
-        return <Navigate to="/" replace />;
+        return <Navigate to={Pages.ROOT} replace />;
     }
 
 }

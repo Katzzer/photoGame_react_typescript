@@ -2,14 +2,28 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
+import {redirect} from "react-router-dom";
+import {Pages} from "../tools/RouterEnum";
+
+interface PropsType {
+    checkIfUserIsLogged: () => void
+}
 
 // TODO: implement on backend last changes and here upload new photo when there are some changes
 
-function ShowAllPhotosFroCurrentUser() {
+function ShowAllPhotosFroCurrentUser(props: PropsType) {
     const [state, _] = useContext(TokenContext);
     const [listOfPhotos, setListOfPhotos] = useState<Photo[]>([]);
     const [listOfPhotosWithImage, setListOfPhotosWithImage] = useState<Photo[]>([]);
     const [image, setImage] = useState("");
+
+    useEffect(() => {
+        if (!state.isUserLogged) {
+            redirect(Pages.ROOT);
+        }
+        console.log("aabb")
+        props.checkIfUserIsLogged();
+    }, [listOfPhotos, listOfPhotosWithImage, image]);
 
     useEffect(() => {
         console.log("inside useEffect")

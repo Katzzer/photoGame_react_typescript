@@ -19,7 +19,6 @@ interface PropsType {
     setToken: (actionType: ActionType, tokens: Partial<State>) => void
 }
 
-
 function LoginPage(props:PropsType) {
     const [state, _] = useContext(TokenContext);
     const [username, setUsername] = useState("katzz");
