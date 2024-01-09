@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, useLocation} from "react-router-dom";
+import {Pages} from "../../tools/RouterEnum";
 
 const Header = () => {
     const location = useLocation();
@@ -9,20 +10,17 @@ const Header = () => {
             <header>
                 <div className="header__wrapper">
                     <div id="header">
-                        <h1 className="header__textForDesktop">React demo testing application</h1>
+                        <h1 className="header__textForDesktop">Photo game - frontend</h1>
                     </div>
 
                     {location.pathname !== "/" &&
                         <div className="link-wrapper">
-                            <Link to={"/"}>Go to main page</Link>
+                            <Link to={Pages.ROOT}>Go to main page</Link>
                         </div>
                     }
 
                 </div>
-
             </header>
-
-
         </>
     )
 

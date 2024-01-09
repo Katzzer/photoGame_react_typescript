@@ -155,6 +155,8 @@ function LoginPage(props:PropsType) {
         showImageThumbnailFromBackend();
     }
 
+
+    // TODO: check if it could be removed
     async function showImageFromBackend() {
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
@@ -168,6 +170,7 @@ function LoginPage(props:PropsType) {
         setImageFromBackend(URL.createObjectURL(response.data));
     }
 
+    // TODO: check if it could be removed
     async function showImageThumbnailFromBackend() {
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
@@ -181,6 +184,7 @@ function LoginPage(props:PropsType) {
         setImageThumbnailFromBackend(URL.createObjectURL(response.data));
     }
 
+    // TODO: implement on other page then remove
     function handleImageUpload(e:any) {
         let image_as_base64 = URL.createObjectURL(e.target.files[0])
         let image_as_file = e.target.files[0];
@@ -188,6 +192,7 @@ function LoginPage(props:PropsType) {
         setUploadedImagePreview(image_as_base64);
     }
 
+    // TODO: implement on other page then remove
     function handleSubmit(e:React.FormEvent) {
         e.preventDefault();
 

@@ -3,10 +3,13 @@ import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
 
+// TODO: implement on backend last changes and here upload new photo when there are some changes
+
 function ShowAllPhotosFroCurrentUser() {
     const [state, _] = useContext(TokenContext);
     const [listOfPhotos, setListOfPhotos] = useState<Photo[]>([]);
     const [listOfPhotosWithImage, setListOfPhotosWithImage] = useState<Photo[]>([]);
+    const [image, setImage] = useState("");
 
     useEffect(() => {
         console.log("inside useEffect")
@@ -51,7 +54,6 @@ function ShowAllPhotosFroCurrentUser() {
         }
 
         return undefined;
-
     }
 
     function getListOfPhotosForCurrentUser() {
@@ -67,16 +69,44 @@ function ShowAllPhotosFroCurrentUser() {
         })
     }
 
+    async function showImage(imageId: number | undefined) {
+        const config:AxiosRequestConfig  = {
+            responseType: 'blob',
+            headers: {
+                Authorization: `Bearer ${state.idToken}`
+            },
+        };
+
+        if (imageId) {
+            const response = await axios.get("http://localhost:8080/api/v1/data/image/" + imageId, config);
+            console.log(response.data);
+            setImage(URL.createObjectURL(response.data));
+        }
+
+    }
+
+    function closeImage() {
+        setImage("");
+    }
+
     return (
         <div className="">
             <div className="text-center">
                 <button onClick={getListOfPhotosForCurrentUser}>Reload data</button>
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
-                    <div>
+                    <div onClick={() => showImage(photo.id)}>
                         <div>{photo.id}</div>
                         <img src={photo.image} alt={"image" + photo.id}/>
                     </div>
                 )}
+
+                <button onClick={closeImage}>Close image</button>
+                {image &&
+                    <div>
+                        <img src={image} alt={"image"}/>
+                    </div>
+                }
+
             </div>
         </div>
     );
