@@ -7,7 +7,7 @@ import {
 import UserPool from "../security/data/UserPool"
 import axios, {AxiosRequestConfig} from "axios";
 import {Link, NavLink} from "react-router-dom";
-import {Pages} from "../tools/RouterEnum";
+import {Page} from "../tools/RouterEnum";
 import getSessionAndVerify from "../security/auth";
 import TokenContext from "../context/token-context";
 import {ActionType, State} from "../model/token.model";
@@ -233,7 +233,7 @@ function LoginPage(props:PropsType) {
 
             <div className="mainPage__link-wrapper">
                 <div className="link-wrapper">
-                    <NavLink to={Pages.ROOT}>To do - Just testing Link</NavLink>
+                    <NavLink to={Page.ROOT}>To do - Just testing Link</NavLink>
                 </div>
             </div>
 
@@ -335,7 +335,7 @@ function LoginPage(props:PropsType) {
 
                         <div className="mainPage__link-wrapper">
                             <div className="link-wrapper">
-                                <Link className="button" to={Pages.ALL_PHOTOS}>Show all your photos</Link>
+                                <Link className="button" to={Page.ALL_PHOTOS}>Show all your photos</Link>
                             </div>
                         </div>
 

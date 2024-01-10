@@ -1,7 +1,6 @@
-export enum Pages {
+export enum Page {
     "ROOT" = "/",
     "ALL_OTHER_PAGES" = "*" ,
     "ALL_PHOTOS" = "/all-photos" ,
-    "HOME" = "/home",
     "LOGIN" = "/login",
 }

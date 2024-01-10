@@ -2,13 +2,14 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
-import {Pages} from "../tools/RouterEnum";
+import {Page} from "../tools/RouterEnum";
 import ShowAllPhotosForCurrentUser from "../pages/ShowAllPhotosForCurrentUser";
 import {useContext, useEffect, useReducer} from "react";
 import {tokenReducer} from "../reducer/tokenReducer";
 import {ActionType, initialState, State} from "../model/token.model";
 import TokenContext from "../context/token-context";
 import getSessionAndVerify from "../security/auth";
+import Home from "../pages/Home";
 
 interface ProtectedRouteProps {
     children:  JSX.Element;
@@ -78,7 +79,9 @@ function Router() {
             <Header/>
             <Routes>
 
-                <Route path={Pages.ALL_OTHER_PAGES}
+                <Route path={Page.ROOT} element={ <Home />} />
+
+                <Route path={Page.LOGIN}
                        element={
                            <LoginPage
                                setIsUserLogged={setIsUserLogged}
@@ -87,7 +90,7 @@ function Router() {
                            />}
                 />
 
-                <Route path={Pages.ALL_PHOTOS} element={
+                <Route path={Page.ALL_PHOTOS} element={
                     <ProtectedRoute>
                         <ShowAllPhotosForCurrentUser
                             checkIfUserIsLogged={checkIfUserIsLogged}
@@ -95,7 +98,7 @@ function Router() {
                     </ProtectedRoute>
                 }/>
 
-                <Route path={Pages.ALL_OTHER_PAGES} element={ <NotFoundPage /> } />
+                <Route path={Page.ALL_OTHER_PAGES} element={ <NotFoundPage /> } />
 
             </Routes>
         </BrowserRouter>
@@ -113,7 +116,7 @@ function ProtectedRoute ({ children }: ProtectedRouteProps): JSX.Element {
     if (state.isUserLogged) {
         return children;
     } else {
-        return <Navigate to={Pages.ROOT} replace />;
+        return <Navigate to={Page.ROOT} replace />;
     }
 
 }

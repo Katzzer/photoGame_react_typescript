@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
 import {redirect} from "react-router-dom";
-import {Pages} from "../tools/RouterEnum";
+import {Page} from "../tools/RouterEnum";
 
 interface PropsType {
     checkIfUserIsLogged: () => void
@@ -19,14 +19,12 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
 
     useEffect(() => {
         if (!state.isUserLogged) {
-            redirect(Pages.ROOT);
+            redirect(Page.ROOT);
         }
-        console.log("aabb")
         props.checkIfUserIsLogged();
     }, [listOfPhotos, listOfPhotosWithImage, image]);
 
     useEffect(() => {
-        console.log("inside useEffect")
         getListOfPhotosForCurrentUser();
     }, []);
 
