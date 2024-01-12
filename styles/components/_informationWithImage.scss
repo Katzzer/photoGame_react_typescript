@@ -1,6 +1,31 @@
 .informationWithImage__wrapper {
+  display: flex;
+  height: 200px;
   width: 100%;
   border: 1px solid;
   border-radius: 5px;
-  margin: 10px;
+  margin: 10px 0;
+
+  .informationWithImage__image-wrapper {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    .informationWithImage__image {
+      max-width:100%;
+      max-height:100%;
+      height:auto;
+      object-fit: contain;
+    }
+  }
+
+  .informationWithImage__data-wrapper {
+    width: 40%;
+    background: grey;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
 }

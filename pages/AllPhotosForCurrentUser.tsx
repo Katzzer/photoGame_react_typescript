@@ -107,11 +107,15 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
 
     return (
         <div className="">
-            <div className="text-center">
-                <button onClick={getListOfPhotosForCurrentUser}>Reload data</button>
+            <div className={"all-photos-for-current-user__container"}>
+                <button className={"all-photos-for-current-user__reload-button"} onClick={getListOfPhotosForCurrentUser}>Reload data</button>
 
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
-                  <InformationWithImage photoId={photo.id} image={photo.image} showModalWindowWithImage={showModalWindowWithImage}/>
+                  <InformationWithImage
+                      photoId={photo.id}
+                      image={photo.image}
+                      city={photo.city}
+                      showModalWindowWithImage={showModalWindowWithImage}/>
                 )}
 
                 {isModalWindowForImageOpen && image &&

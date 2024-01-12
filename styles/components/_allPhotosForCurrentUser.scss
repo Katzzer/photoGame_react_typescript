@@ -1,62 +1,69 @@
-.all-photos-for-current__wrapper {
-  width: 100%;
-}
+.all-photos-for-current-user__container {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 
-.all-photos-for-current-user__image {
-  width: 100vw;
-  height: 100vh;
-  //background: yellow;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  .all-photos-for-current-user__layer {
-    background-color: rgba(248, 247, 216, 0.7);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  button {
-    position: relative;
-  }
-  .all-photos-for-current-user__button-with-bottom-margin {
-    margin-bottom: 200px;
-  }
-  img {
-    max-width: 80%;
-    max-height: 80%;
-    display: block;
-    position: relative;
+  .all-photos-for-current-user__reload-button {
+
   }
 
-  .all-photos-for-current-user__loading-state {
+  .all-photos-for-current-user__image {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .all-photos-for-current-user__loading {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 10px solid #ddd;
-    border-top-color: #0090ff;
-    animation: loading 1s linear infinite;
-  }
-  @keyframes loading {
-    to {
-      transform: rotate(360deg);
-    }
-  }
 
+    .all-photos-for-current-user__layer {
+      background-color: rgba(248, 247, 216, 0.7);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    button {
+      position: relative;
+    }
+    .all-photos-for-current-user__button-with-bottom-margin {
+      margin-bottom: 200px;
+    }
+    img {
+      max-width: 80%;
+      max-height: 80%;
+      display: block;
+      position: relative;
+    }
+
+    .all-photos-for-current-user__loading-state {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .all-photos-for-current-user__loading {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 10px solid #ddd;
+      border-top-color: #0090ff;
+      animation: loading 1s linear infinite;
+    }
+    @keyframes loading {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+  }
 }
