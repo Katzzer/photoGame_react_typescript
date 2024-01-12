@@ -1,8 +1,10 @@
 # PHOTO GAME - FRONT END
 
-## TODO
-- If implemented: Set correct domain for Cookies from AWS Cognito in `UserPool.tsx`
-- If implemented: Also set secure cookies
+## TODO Important
+- Show error when image wasn't uploaded
+
+## TODO - Nico to have
+- When user upload image show it on page `all-photos`, this could happen when image is uploaded from phone
 
 ## Used technology
 - React

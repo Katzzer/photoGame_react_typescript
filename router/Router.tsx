@@ -3,7 +3,7 @@ import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
 import {Page} from "../tools/RouterEnum";
-import ShowAllPhotosForCurrentUser from "../pages/ShowAllPhotosForCurrentUser";
+import ShowAllPhotosForCurrentUser from "../pages/AllPhotosForCurrentUser";
 import {useContext, useEffect, useReducer} from "react";
 import {tokenReducer} from "../reducer/tokenReducer";
 import {ActionType, initialState, State} from "../model/token.model";

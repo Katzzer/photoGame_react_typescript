@@ -4,6 +4,7 @@ import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
 import {redirect} from "react-router-dom";
 import {Page} from "../tools/RouterEnum";
+import InformationWithImage from "./components/InformationWithImage";
 
 interface PropsType {
     checkIfUserIsLogged: () => void
@@ -105,16 +106,15 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
         <div className="">
             <div className="text-center">
                 <button onClick={getListOfPhotosForCurrentUser}>Reload data</button>
+
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
-                    <div onClick={() => showImage(photo.id)}>
-                        <div>{photo.id}</div>
-                        <img src={photo.image} alt={"image" + photo.id}/>
-                    </div>
+                  <InformationWithImage photoId={photo.id} image={photo.image} showImage={showImage}/>
                 )}
 
-                <button onClick={closeImage}>Close image</button>
                 {image &&
-                    <div>
+                    <div className={"all-photos-for-current-user__image"}>
+                        <div className={"all-photos-for-current-user__layer"}/>
+                        <button onClick={closeImage}>Close image</button>
                         <img src={image} alt={"image"}/>
                     </div>
                 }
