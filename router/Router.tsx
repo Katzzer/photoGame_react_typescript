@@ -10,6 +10,7 @@ import {ActionType, initialState, State} from "../model/token.model";
 import TokenContext from "../context/token-context";
 import getSessionAndVerify from "../security/auth";
 import Home from "../pages/Home";
+import UploadImage from "../pages/UploadImage";
 
 interface ProtectedRouteProps {
     children:  JSX.Element;
@@ -89,6 +90,12 @@ function Router() {
                                setToken={setToken}
                            />}
                 />
+
+                <Route path={Page.UPLOAD_IMAGE} element={
+                    <ProtectedRoute>
+                        <UploadImage />
+                    </ProtectedRoute>
+                }/>
 
                 <Route path={Page.ALL_PHOTOS} element={
                     <ProtectedRoute>
