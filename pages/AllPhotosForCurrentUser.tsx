@@ -16,6 +16,7 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
     const [state, _] = useContext(TokenContext);
     const [listOfPhotos, setListOfPhotos] = useState<Photo[]>([]);
     const [listOfPhotosWithImage, setListOfPhotosWithImage] = useState<Photo[]>([]);
+    const [isModalWindowForImageOpen, setIsModalWindowForImageOpen] = useState(false);
     const [image, setImage] = useState("");
 
     useEffect(() => {
@@ -82,7 +83,8 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
         })
     }
 
-    async function showImage(imageId: number | undefined) {
+    async function showModalWindowWithImage(imageId: number | undefined) {
+        setIsModalWindowForImageOpen(true);
         const config:AxiosRequestConfig  = {
             responseType: 'blob',
             headers: {
@@ -100,6 +102,7 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
 
     function closeImage() {
         setImage("");
+        setIsModalWindowForImageOpen(false);
     }
 
     return (
@@ -108,14 +111,24 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
                 <button onClick={getListOfPhotosForCurrentUser}>Reload data</button>
 
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
-                  <InformationWithImage photoId={photo.id} image={photo.image} showImage={showImage}/>
+                  <InformationWithImage photoId={photo.id} image={photo.image} showModalWindowWithImage={showModalWindowWithImage}/>
                 )}
 
-                {image &&
+                {isModalWindowForImageOpen && image &&
                     <div className={"all-photos-for-current-user__image"}>
                         <div className={"all-photos-for-current-user__layer"}/>
                         <button onClick={closeImage}>Close image</button>
                         <img src={image} alt={"image"}/>
+                    </div>
+                }
+
+                {isModalWindowForImageOpen && !image &&
+                    <div className={"all-photos-for-current-user__image"}>
+                        <div className={"all-photos-for-current-user__layer"}/>
+                        <button className={"all-photos-for-current-user__button-with-bottom-margin"} onClick={closeImage}>Close image</button>
+                        <div className={"all-photos-for-current-user__loading-state"}>
+                            <div className={"all-photos-for-current-user__loading"}></div>
+                        </div>
                     </div>
                 }
 
