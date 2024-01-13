@@ -1,0 +1,8 @@
+//$breakpoint-tablet: 768px;
+$breakpoint-mobile: 600px;
+
+@mixin phoneResolution {
+  @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}

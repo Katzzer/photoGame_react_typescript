@@ -1,16 +1,12 @@
-import React, {useContext,  useState} from 'react';
-import {
-    CognitoUser,
-    AuthenticationDetails,
-    CognitoUserAttribute,
-} from "amazon-cognito-identity-js";
-import UserPool from "../security/data/UserPool"
-import axios from "axios";
-import {Link, NavLink} from "react-router-dom";
-import {Page} from "../tools/RouterEnum";
-import getSessionAndVerify from "../security/auth";
+import React, {useContext, useState} from 'react';
 import TokenContext from "../context/token-context";
+import getSessionAndVerify from "../security/auth";
 import {ActionType, State} from "../model/token.model";
+import {AuthenticationDetails, CognitoUser, CognitoUserAttribute} from "amazon-cognito-identity-js";
+import UserPool from "../security/data/UserPool";
+import {Link} from "react-router-dom";
+import {Page} from "../tools/RouterEnum";
+import axios from "axios";
 
 interface PropsType {
     setIsUserLogged: (isUserLogged: boolean) => void
@@ -18,14 +14,19 @@ interface PropsType {
     setToken: (actionType: ActionType, tokens: Partial<State>) => void
 }
 
-function LoginPage(props:PropsType) {
+function Login(props:PropsType) {
     const [state, _] = useContext(TokenContext);
     const [username, setUsername] = useState("katzz");
     const [email, setEmail] = useState("katzz@seznam.cz");
     const [password, setPassword] = useState("Monitor11!");
-    const [messageFromBackend, setMessageFromBackend] = useState(""); //  // TODO: only for testing:
+    const [messageFromBackend, setMessageFromBackend] = useState(""); // TODO: only for testing:
+    const [isShownLoginForm, setIsShownLoginForm] = useState(true);
 
-    async function checkLoggedUser() {
+    const renderSpans = Array.from({length: 50}, (_, index) => {
+        return <AnimatedSpan key={index} value={index}/>;
+    });
+
+    function checkLoggedUser() {
         getSessionAndVerify().then(session => {
             if (session) {
                 props.setIsUserLogged(true);
@@ -118,18 +119,26 @@ function LoginPage(props:PropsType) {
         }
     }
 
+    function toggleLoginAndSignupForm() {
+        setIsShownLoginForm(!isShownLoginForm);
+    }
+
+    // TODO: remove when not needed
     function copyIdTokenToClipboard() {
         navigator.clipboard.writeText("Bearer " + state.idToken);
     }
 
+    // TODO: remove when not needed
     function copyAccessTokenToClipboard() {
         navigator.clipboard.writeText("Bearer " + state.accessToken);
     }
 
+    // TODO: remove when not needed
     function copyRefreshTokenToClipboard() {
         navigator.clipboard.writeText("Bearer " + state.refreshToken);
     }
 
+    // TODO: remove when not needed
     async function sendTestingRequestToBackend() {
         const config = {
             headers: { Authorization: `Bearer ${state.idToken}` }
@@ -141,50 +150,57 @@ function LoginPage(props:PropsType) {
     }
 
     return (
-        <div className={"login-page_wrapper"}>
-            <h1>Welcome at Login page</h1>
-
-            <div className="mainPage__link-wrapper">
-                <div className="link-wrapper">
-                    <NavLink to={Page.ROOT}>To do - Just testing Link</NavLink>
-                </div>
-            </div>
-
+        <>
             {!state.isUserLogged && (<>
-                <h1>SignUp or LogIn</h1>
+                <div className="login__container">
 
-                <div>
-                    <label htmlFor="cognito-simple__username">Email:</label>
-                    <input id="cognito-simple__username" type={"text"} value={username} onChange={(event) => setUsername(event.target.value)}/>
+                    {isShownLoginForm && <div className="login__box">
+                        <h2>Login</h2>
+                        <form action="#">
+                            <div className="login__input-box">
+                                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required/>
+                                <label>Email</label>
+                            </div>
+                            <div className="login__input-box">
+                                <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required/>
+                                <label>Password</label>
+                            </div>
+                            <div className="login__forgot-pass">
+                                <a href="#">Forgot your password?</a>
+                            </div>
+                            <button onClick={onLogin} className="login__btn">Login</button>
+                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Signup</div>
+                        </form>
+                    </div> }
+
+                    {!isShownLoginForm && <div className="login__box">
+                        <h2>Login</h2>
+                        <form action="#">
+                            <div className="login__input-box">
+                                <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} required/>
+                                <label>Email</label>
+                            </div>
+                            <div className="login__input-box">
+                                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required/>
+                                <label>Email</label>
+                            </div>
+                            <div className="login__input-box">
+                                <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required/>
+                                <label>Password</label>
+                            </div>
+                            <div className="login__forgot-pass">
+                                <a href="#">Forgot your password?</a>
+                            </div>
+                            <button onClick={onSubmit} className="login__btn">Signup</button>
+                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Log in</div>
+                        </form>
+                    </div>}
+
+                    {renderSpans}
                 </div>
-
-                <div>
-                    <label htmlFor="cognito-simple__email">Email:</label>
-                    <input id="cognito-simple__email" type={"text"} value={email} onChange={(event) => setEmail(event.target.value)}/>
-                </div>
-
-                <div>
-                    <label htmlFor="cognito-simple__password">Password</label>
-                    <input id="cognito-simple__password" type={"password"} value={password} onChange={(event) => setPassword(event.target.value)}/>
-                </div>
-
-
-                <button onClick={onSubmit}>Sign up</button>
-
-                <h1>LogIn</h1>
-
-                <div>
-                    <label htmlFor="cognito__email">Email:</label>
-                    <input id="email" type={"text"} value={email} onChange={(event) => setEmail(event.target.value)}/>
-                </div>
-
-                <div>
-                    <label htmlFor="cognito__password">Password</label>
-                    <input id="cognito__password" type={"password"} value={password} onChange={(event) => setPassword(event.target.value)}/>
-                </div>
-                <button onClick={onLogin}>LogIn</button>
             </>)}
 
+            {/*TODO: redirect to another page: */}
             {state.isUserLogged && (<>
                 <h1>Welcome {state.loggedUserUsername}</h1>
 
@@ -229,9 +245,16 @@ function LoginPage(props:PropsType) {
                 </div>
 
             </>)}
-
-        </div>
+        </>
     );
 }
 
-export default LoginPage;
+export default Login;
+
+interface AnimatedSpanProps {
+    value: number;
+}
+
+function AnimatedSpan({value}: AnimatedSpanProps) {
+    return <span style={{'--i': value} as React.CSSProperties}></span>;
+}

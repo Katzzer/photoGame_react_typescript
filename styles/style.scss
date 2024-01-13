@@ -7,15 +7,10 @@
 
 body {
   margin: 0;
-  background-color: #344a72;
+  background-color: #1f293a;
   min-height: 100vh;
   height: 100%;
   color: #ddd;
-}
-
-.container{
-  max-width: 1100px;
-  margin: 100px auto 0;
 }
 
 button {
@@ -32,17 +27,17 @@ button {
 .link-wrapper {
   a {
     background: transparent;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to bottom, #fb3569 45%, #3399ff 55%);
+    background-size: 100% 220%;
+    background-position: 50% 100%;
     border: none;
     font-size: 2.5rem;
     font-weight: 600;
     //color: #3399ff;
     color: transparent;
     -webkit-background-clip: text;
-    background-repeat: no-repeat;
     transition: 0.5s ease-out;
-    background-image: linear-gradient(to bottom, #fb3569 45%, #3399ff 55%);
-    background-size: 100% 220%;
-    background-position: 50% 100%;
 
     &:hover {
       background-position: 50% 0;

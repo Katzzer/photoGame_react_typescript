@@ -1,7 +1,6 @@
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
-import LoginPage from "../pages/LoginPage";
 import {Page} from "../tools/RouterEnum";
 import ShowAllPhotosForCurrentUser from "../pages/AllPhotosForCurrentUser";
 import {useContext, useEffect, useReducer} from "react";
@@ -11,6 +10,7 @@ import TokenContext from "../context/token-context";
 import getSessionAndVerify from "../security/auth";
 import Home from "../pages/Home";
 import UploadImage from "../pages/UploadImage";
+import Login from "../pages/Login";
 
 interface ProtectedRouteProps {
     children:  JSX.Element;
@@ -84,7 +84,7 @@ function Router() {
 
                 <Route path={Page.LOGIN}
                        element={
-                           <LoginPage
+                           <Login
                                setIsUserLogged={setIsUserLogged}
                                setLoggedUserUsername={setLoggedUserUsername}
                                setToken={setToken}
