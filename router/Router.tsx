@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate, useLocation} from "react-router-dom";
 import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
 import {Page} from "../tools/RouterEnum";
@@ -8,7 +8,7 @@ import {tokenReducer} from "../reducer/tokenReducer";
 import {ActionType, initialState, State} from "../model/token.model";
 import TokenContext from "../context/token-context";
 import getSessionAndVerify from "../security/auth";
-import Home from "../pages/Home";
+import Welcome from "../pages/Welcome";
 import UploadImage from "../pages/UploadImage";
 import Login from "../pages/Login";
 
@@ -80,7 +80,7 @@ function Router() {
             <Header/>
             <Routes>
 
-                <Route path={Page.ROOT} element={ <Home />} />
+                <Route path={Page.ROOT} element={ <Welcome />} />
 
                 <Route path={Page.LOGIN}
                        element={

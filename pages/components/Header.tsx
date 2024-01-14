@@ -7,20 +7,20 @@ const Header = () => {
 
     return (
         <>
+            {location.pathname !== "/" &&
             <header>
                 <div className="header__wrapper">
                     <div id="header">
                         <h1 className="header__textForDesktop">Photo game - frontend</h1>
                     </div>
 
-                    {location.pathname !== "/" &&
-                        <div className="link-wrapper">
-                            <Link to={Page.ROOT}>Go to main page</Link>
-                        </div>
-                    }
+                    <div className="link-wrapper">
+                        <Link to={Page.ROOT}>Go to main page</Link>
+                    </div>
 
                 </div>
             </header>
+            }
         </>
     )
 
