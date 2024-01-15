@@ -112,9 +112,7 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
 
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
                   <InformationWithImage
-                      photoId={photo.id}
-                      image={photo.image}
-                      city={photo.city}
+                      photo={photo}
                       showModalWindowWithImage={showModalWindowWithImage}/>
                 )}
 

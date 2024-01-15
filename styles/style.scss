@@ -1,10 +1,10 @@
-@import "./components/notFoundPage";
-@import "./components/login";
+@import "pages/notFoundPage";
+@import "pages/login";
 @import "./components/header";
 @import "./components/informationWithImage";
-@import "./components/allPhotosForCurrentUser";
-@import "./components/welcome";
-
+@import "pages/allPhotosForCurrentUser";
+@import "pages/welcome";
+@import "./pages/uploadImage";
 
 body {
   margin: 0;
@@ -14,6 +14,8 @@ body {
   color: #ddd;
 }
 
+input[type=file],
+input[type=submit],
 button {
     background: #50005a;
     border: 1px solid #50005a;

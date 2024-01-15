@@ -1,8 +1,8 @@
 export interface Photo {
     id?: number,
     photoOwner?: string,
-    gpsPositionLatitude: number,
-    gpsPositionLongitude: number,
+    gpsPositionLatitude?: number,
+    gpsPositionLongitude?: number,
     city?: string,
     region?: string,
     locality?: string,

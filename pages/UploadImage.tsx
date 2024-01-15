@@ -2,20 +2,28 @@ import React, {useContext, useState} from 'react';
 import {Photo} from "../common/types";
 import axios from "axios";
 import TokenContext from "../context/token-context";
+import exifr from 'exifr'
 
 function UploadImage() {
     const [state, _] = useContext(TokenContext);
     const [uploadedImage, setUploadedImage] = useState(new Blob());
     const [uploadedImagePreview, setUploadedImagePreview] = useState("");
+    const [photo, setPhoto] = useState<Photo>({
+        gpsPositionLatitude: undefined,
+        gpsPositionLongitude: undefined,
+        city: undefined
+    });
+
+    function setCityToPhoto(city: string) {
+
+        setPhoto(prevState => ({
+            ...prevState,
+            city: city,
+        }))
+    }
 
     function handleSubmit(e:React.FormEvent) {
         e.preventDefault();
-
-        const photo:Photo = {
-            gpsPositionLatitude: 50,
-            gpsPositionLongitude: 15,
-            city: 'Hradec Kralove'
-        }
 
         const photoAsJson = JSON.stringify(photo);
         const blob = new Blob([photoAsJson], {
@@ -48,6 +56,24 @@ function UploadImage() {
         let image_as_file = e.target.files[0];
         setUploadedImage(image_as_file)
         setUploadedImagePreview(image_as_base64);
+
+         exifr.gps(image_as_file).then(response => {
+             if (response.longitude && response.latitude) {
+
+                 setPhoto(prevState => ({
+                     ...prevState,
+                     gpsPositionLatitude: response.latitude,
+                     gpsPositionLongitude: response.longitude,
+                 }))
+             } else {
+                 setPhoto(prevState => ({
+                     ...prevState,
+                     gpsPositionLatitude: undefined,
+                     gpsPositionLongitude: undefined,
+                 }))
+             }
+
+         })
     }
 
     return (
@@ -56,28 +82,30 @@ function UploadImage() {
 
             <form onSubmit={handleSubmit}>
                 <label>
-                    Name:
-                    <input type="text" name="photo"/>
+                    City:
+                    <input type="text" name="city" onChange={(inputValue) => setCityToPhoto(inputValue.target.value)}/>
                 </label>
 
                 <br/>
 
-                {uploadedImagePreview &&
-                    <div className={"image_preview"}>
-                        <img src={uploadedImagePreview} alt="image preview"/>
-                    </div>
-                }
-
-                <br/>
-
                 <label>
-                    Name:
                     <input type="file" name="inputFile" onChange={handleImageUpload}/>
                 </label>
 
                 <br/>
 
                 <input type="submit" value="Submit"/>
+
+
+                {uploadedImagePreview &&
+                    <div className={"uploadImage__image-preview"}>
+                        <img src={uploadedImagePreview} alt="image preview"/>
+                    </div>
+                }
+
+                <div>
+                    GPS: {photo?.gpsPositionLatitude} : {photo?.gpsPositionLongitude}
+                </div>
 
             </form>
 

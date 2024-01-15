@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Photo} from "../../common/types";
 
 interface PropTypes {
-    photoId: number | undefined,
-    image: string | undefined,
-    city: string | undefined,
+    photo: Photo
     showModalWindowWithImage: (imageId: number | undefined) => void
 }
 
-function InformationWithImage({photoId, image, showModalWindowWithImage, city}: PropTypes) {
+function InformationWithImage(props: PropTypes) {
     return (
-        <div className={"informationWithImage__wrapper"} onClick={() => showModalWindowWithImage(photoId)}>
-            <div className={"informationWithImage__image-wrapper"}>
-                <img className={"informationWithImage__image"} src={image} alt={"image" + photoId}/>
+        <div className={"informationWithImage__wrapper"}>
+            <div className={"informationWithImage__image-wrapper"} onClick={() => props.showModalWindowWithImage(props.photo.id)}>
+                <img className={"informationWithImage__image"} src={props.photo.image} alt={"image" + props.photo.id}/>
             </div>
 
-
             <div className={"informationWithImage__data-wrapper"}>
-                <div className={"informationWithImage__photoId"}>id: {photoId}</div>
-                <div className={"informationWithImage__city-name"}>City: {city}</div>
+                <div className={"informationWithImage__photoId"}>id: {props.photo.id}</div>
+                <div className={"informationWithImage__city-name"}>City: {props.photo.city}</div>
+                <div className={"informationWithImage__city-gps"}>GPS: {props.photo.gpsPositionLatitude} : {props.photo.gpsPositionLongitude}</div>
+                <div className={"informationWithImage__country-gps"}>Country: {props.photo.country}</div>
             </div>
 
         </div>
