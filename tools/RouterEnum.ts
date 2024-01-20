@@ -3,5 +3,6 @@ export enum Page {
     ALL_OTHER_PAGES = "*" ,
     ALL_PHOTOS = "/all-photos" ,
     LOGIN = "/login",
-    UPLOAD_IMAGE = "/upload-image"
+    UPLOAD_IMAGE = "/upload-image",
+    LIST_OF_CITIES = "/list-of-cities"
 }

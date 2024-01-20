@@ -4,9 +4,8 @@ import getSessionAndVerify from "../security/auth";
 import {ActionType, State} from "../model/token.model";
 import {AuthenticationDetails, CognitoUser, CognitoUserAttribute} from "amazon-cognito-identity-js";
 import UserPool from "../security/data/UserPool";
-import {Link} from "react-router-dom";
+import LinkToPage from "./components/LinkToPage";
 import {Page} from "../tools/RouterEnum";
-import axios from "axios";
 
 interface PropsType {
     setIsUserLogged: (isUserLogged: boolean) => void
@@ -231,17 +230,10 @@ function Login(props:PropsType) {
                     <br/>
                     <br/>
 
-                    <div className="mainPage__link-wrapper">
-                        <div className="link-wrapper">
-                            <Link className="button" to={Page.ALL_PHOTOS}>Show all your photos</Link>
-                        </div>
-                    </div>
+                    <LinkToPage linkTo={Page.ALL_PHOTOS} description={"Show all your photos"}/>
+                    <LinkToPage linkTo={Page.UPLOAD_IMAGE} description={"Upload image"}/>
+                    <LinkToPage linkTo={Page.LIST_OF_CITIES} description={"List of cities"}/>
 
-                    <div className="mainPage__link-wrapper">
-                        <div className="link-wrapper">
-                            <Link className="button" to={Page.UPLOAD_IMAGE}>Upload image</Link>
-                        </div>
-                    </div>
                 </div>
 
             </>)}

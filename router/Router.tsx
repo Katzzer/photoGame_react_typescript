@@ -1,8 +1,8 @@
-import {BrowserRouter, Routes, Route, Navigate, useLocation} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
 import {Page} from "../tools/RouterEnum";
-import ShowAllPhotosForCurrentUser from "../pages/AllPhotosForCurrentUser";
+import ShowAllPhotosForCurrentUser from "../pages/ListOfPhotos";
 import {useContext, useEffect, useReducer} from "react";
 import {tokenReducer} from "../reducer/tokenReducer";
 import {ActionType, initialState, State} from "../model/token.model";
@@ -11,6 +11,7 @@ import getSessionAndVerify from "../security/auth";
 import Welcome from "../pages/Welcome";
 import UploadImage from "../pages/UploadImage";
 import Login from "../pages/Login";
+import ListOfCities from "../pages/ListOfCities";
 
 interface ProtectedRouteProps {
     children:  JSX.Element;
@@ -91,6 +92,12 @@ function Router() {
                            />}
                 />
 
+                <Route path={Page.LIST_OF_CITIES} element={
+                    <ProtectedRoute>
+                        <ListOfCities />
+                    </ProtectedRoute>
+                }/>
+
                 <Route path={Page.UPLOAD_IMAGE} element={
                     <ProtectedRoute>
                         <UploadImage />
@@ -99,9 +106,13 @@ function Router() {
 
                 <Route path={Page.ALL_PHOTOS} element={
                     <ProtectedRoute>
-                        <ShowAllPhotosForCurrentUser
-                            checkIfUserIsLogged={checkIfUserIsLogged}
-                        />
+                        <ShowAllPhotosForCurrentUser/>
+                    </ProtectedRoute>
+                }/>
+
+                <Route path={Page.ALL_PHOTOS + "/:city"} element={
+                    <ProtectedRoute>
+                        <ShowAllPhotosForCurrentUser/>
                     </ProtectedRoute>
                 }/>
 

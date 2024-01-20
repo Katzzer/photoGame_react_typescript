@@ -17,7 +17,7 @@ function InformationWithImage(props: PropTypes) {
             <div className={"informationWithImage__data-wrapper"}>
                 <div className={"informationWithImage__photoId"}>id: {props.photo.id}</div>
                 <div className={"informationWithImage__city-name"}>City: {props.photo.city}</div>
-                <div className={"informationWithImage__city-gps"}>GPS: {props.photo.gpsPositionLatitude} : {props.photo.gpsPositionLongitude}</div>
+                <div className={"informationWithImage__city-gps"}>GPS: {props.photo.gpsPositionLatitude}N, {props.photo.gpsPositionLongitude}E</div>
                 <div className={"informationWithImage__country-gps"}>Country: {props.photo.country}</div>
             </div>
 

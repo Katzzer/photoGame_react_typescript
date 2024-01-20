@@ -2,32 +2,31 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
-import {redirect} from "react-router-dom";
+import {redirect, useParams} from "react-router-dom";
 import {Page} from "../tools/RouterEnum";
 import InformationWithImage from "./components/InformationWithImage";
+import LinkToPage from "./components/LinkToPage";
 
-interface PropsType {
-    checkIfUserIsLogged: () => void
-}
 
 // TODO: implement on backend last changes and here upload new photo when there are some changes
 
-function ShowAllPhotosFroCurrentUser(props: PropsType) {
+function ListOfPhotos() {
     const [state, _] = useContext(TokenContext);
     const [listOfPhotos, setListOfPhotos] = useState<Photo[]>([]);
     const [listOfPhotosWithImage, setListOfPhotosWithImage] = useState<Photo[]>([]);
     const [isModalWindowForImageOpen, setIsModalWindowForImageOpen] = useState(false);
     const [image, setImage] = useState("");
+    const params = useParams();
+    const header = params.city ? `List of photos by city: ${params.city}` : "All users photos"
 
     useEffect(() => {
         if (!state.isUserLogged) {
             redirect(Page.ROOT);
         }
-        props.checkIfUserIsLogged();
     }, [listOfPhotos, listOfPhotosWithImage, image]);
 
     useEffect(() => {
-        getListOfPhotosForCurrentUser();
+        getListOfPhotos();
     }, []);
 
     useEffect(() => {
@@ -70,7 +69,9 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
         return undefined;
     }
 
-    function getListOfPhotosForCurrentUser() {
+    function getListOfPhotos() {
+        const url = params.city ? "http://localhost:8080/api/v1/data/images/" + params.city : "http://localhost:8080/api/v1/data/images"
+
         setListOfPhotos([]);
         setListOfPhotosWithImage([]);
         const config:AxiosRequestConfig  = {
@@ -78,7 +79,7 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
                 Authorization: `Bearer ${state.idToken}`
             },
         };
-        axios.get("http://localhost:8080/api/v1/data/images", config).then(response => {
+        axios.get(url, config).then(response => {
             setListOfPhotos(response.data);
         })
     }
@@ -108,10 +109,12 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
     return (
         <div className="">
             <div className={"all-photos-for-current-user__container"}>
-                <button className={"all-photos-for-current-user__reload-button"} onClick={getListOfPhotosForCurrentUser}>Reload data</button>
+                <button className={"all-photos-for-current-user__reload-button"} onClick={getListOfPhotos}>Reload data</button>
+                <h1>{header}</h1>
 
                 {listOfPhotos && listOfPhotosWithImage.map(photo =>
                   <InformationWithImage
+                      key={photo.id}
                       photo={photo}
                       showModalWindowWithImage={showModalWindowWithImage}/>
                 )}
@@ -134,10 +137,12 @@ function ShowAllPhotosFroCurrentUser(props: PropsType) {
                     </div>
                 }
 
+                <LinkToPage linkTo={Page.LIST_OF_CITIES} description={"Go back to list of cities"}/>
+
             </div>
         </div>
     );
 
 }
 
-export default ShowAllPhotosFroCurrentUser;
+export default ListOfPhotos;
