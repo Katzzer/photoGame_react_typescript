@@ -3,6 +3,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import LinkToPage from "./components/LinkToPage";
 import {Page} from "../tools/RouterEnum";
+import {BACKEND_URL} from "../tools/constants";
 
 function ListOfCities() {
     const [state, _] = useContext(TokenContext);
@@ -19,7 +20,7 @@ function ListOfCities() {
                 Authorization: `Bearer ${state.idToken}`
             },
         };
-        axios.get("http://localhost:8080/api/v1/data/list-of-cities", config)
+        axios.get(`${BACKEND_URL.LOCALHOST}/list-of-cities`, config)
             .then(response => {
                 setListOfCities(response.data);
             })

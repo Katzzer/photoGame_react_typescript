@@ -6,7 +6,7 @@ import {redirect, useParams} from "react-router-dom";
 import {Page} from "../tools/RouterEnum";
 import InformationWithImage from "./components/InformationWithImage";
 import LinkToPage from "./components/LinkToPage";
-
+import {BACKEND_URL} from "../tools/constants";
 
 // TODO: implement on backend last changes and here upload new photo when there are some changes
 
@@ -49,7 +49,7 @@ function ListOfPhotos() {
             },
         };
 
-        const response = await axios.get("http://localhost:8080/api/v1/data/image/thumbnail/" + photo.id, config);
+        const response = await axios.get(`${BACKEND_URL.LOCALHOST}/image/thumbnail/${photo.id}`, config);
         if (response.data) {
             photo.image = URL.createObjectURL(response.data);
             setListOfPhotosWithImage(prevState => {
@@ -70,7 +70,7 @@ function ListOfPhotos() {
     }
 
     function getListOfPhotos() {
-        const url = params.city ? "http://localhost:8080/api/v1/data/images/" + params.city : "http://localhost:8080/api/v1/data/images"
+        const url = params.city ? `${BACKEND_URL.LOCALHOST}/images/${params.city}` : `${BACKEND_URL.LOCALHOST}/images`
 
         setListOfPhotos([]);
         setListOfPhotosWithImage([]);
@@ -94,7 +94,7 @@ function ListOfPhotos() {
         };
 
         if (imageId) {
-            const response = await axios.get("http://localhost:8080/api/v1/data/image/" + imageId, config);
+            const response = await axios.get(`${BACKEND_URL.LOCALHOST}/api/v1/data/image/${imageId}`, config);
             console.log(response.data);
             setImage(URL.createObjectURL(response.data));
         }
