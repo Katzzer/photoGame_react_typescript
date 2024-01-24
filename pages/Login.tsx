@@ -6,6 +6,7 @@ import {AuthenticationDetails, CognitoUser, CognitoUserAttribute} from "amazon-c
 import UserPool from "../security/data/UserPool";
 import LinkToPage from "./components/LinkToPage";
 import {Page} from "../tools/RouterEnum";
+import axios from "axios";
 
 interface PropsType {
     setIsUserLogged: (isUserLogged: boolean) => void
@@ -201,41 +202,43 @@ function Login(props:PropsType) {
 
             {/*TODO: redirect to another page: */}
             {state.isUserLogged && (<>
-                <h1>Welcome {state.loggedUserUsername}</h1>
+                <div className="login__container-testing">
+                    <h1>Welcome {state.loggedUserUsername}</h1>
 
-                <button onClick={logout}>Logout</button>
+                    <button onClick={logout}>Logout</button>
 
-                <div>
-                    <br/>
-                    <button onClick={sendTestingRequestToBackend}>Send testing request to backend</button>
-                    <br/>
-                    <br/>
-                    {messageFromBackend && <div>Message from backend = {messageFromBackend}</div>}
-                    <br/>
-                    <br/>
-                    <div className={"tokenInfo"}>idToken = {state.idToken}</div>
-                    <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
-                    <br/>
-                    <br/>
-                    <div className={"tokenInfo"}>accessToken = {state.accessToken}</div>
-                    <button onClick={copyAccessTokenToClipboard}>Copy access token</button>
-                    <br/>
-                    <br/>
-                    <div className={"tokenInfo"}>refreshToken = {state.refreshToken}</div>
-                    <button onClick={copyRefreshTokenToClipboard}>Copy access token</button>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <div>
+                        <br/>
+                        <button onClick={sendTestingRequestToBackend}>Send testing request to backend</button>
+                        <br/>
+                        <br/>
+                        {messageFromBackend && <div>Message from backend = {messageFromBackend}</div>}
+                        <br/>
+                        <br/>
+                        <div className={"tokenInfo"}>idToken = {state.idToken}</div>
+                        <button onClick={copyIdTokenToClipboard}>Copy idToken</button>
+                        <br/>
+                        <br/>
+                        <div className={"tokenInfo"}>accessToken = {state.accessToken}</div>
+                        <button onClick={copyAccessTokenToClipboard}>Copy access token</button>
+                        <br/>
+                        <br/>
+                        <div className={"tokenInfo"}>refreshToken = {state.refreshToken}</div>
+                        <button onClick={copyRefreshTokenToClipboard}>Copy access token</button>
+                        <br/>
+                        <br/>
+                        <br/>
 
-                    <br/>
-                    <br/>
+                        <br/>
+                        <br/>
 
-                    <LinkToPage linkTo={Page.ALL_PHOTOS} description={"Show all your photos"}/>
-                    <LinkToPage linkTo={Page.UPLOAD_IMAGE} description={"Upload image"}/>
-                    <LinkToPage linkTo={Page.LIST_OF_CITIES} description={"List of cities"}/>
+                        <LinkToPage linkTo={Page.ALL_PHOTOS} description={"Show all your photos"}/>
+                        <LinkToPage linkTo={Page.UPLOAD_IMAGE} description={"Upload image"}/>
+                        <LinkToPage linkTo={Page.LIST_OF_CITIES} description={"List of cities"}/>
+
+                    </div>
 
                 </div>
-
             </>)}
         </>
     );

@@ -12,9 +12,10 @@ import Welcome from "../pages/Welcome";
 import UploadImage from "../pages/UploadImage";
 import Login from "../pages/Login";
 import ListOfCities from "../pages/ListOfCities";
+import Footer from "../pages/components/Footer";
 
 interface ProtectedRouteProps {
-    children:  JSX.Element;
+    children: JSX.Element;
 }
 
 function Router() {
@@ -36,7 +37,7 @@ function Router() {
                 console.log("user is not logged");
                 setIsUserLogged(false);
                 setLoggedUserUsername("");
-                setToken(ActionType.SET_ID_TOKEN,{idToken: null})
+                setToken(ActionType.SET_ID_TOKEN, {idToken: null})
                 setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: null})
                 setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: null})
             }
@@ -77,54 +78,58 @@ function Router() {
 
     return (
         <TokenContext.Provider value={[state, dispatch]}>
-        <BrowserRouter>
-            <Header/>
-            <Routes>
+            <BrowserRouter>
+                <div id={"content_and_footer_wrapper"}>
 
-                <Route path={Page.ROOT} element={ <Welcome />} />
+                    <Header/>
+                    <Routes>
 
-                <Route path={Page.LOGIN}
-                       element={
-                           <Login
-                               setIsUserLogged={setIsUserLogged}
-                               setLoggedUserUsername={setLoggedUserUsername}
-                               setToken={setToken}
-                           />}
-                />
+                        <Route path={Page.ROOT} element={<Welcome/>}/>
 
-                <Route path={Page.LIST_OF_CITIES} element={
-                    <ProtectedRoute>
-                        <ListOfCities />
-                    </ProtectedRoute>
-                }/>
+                        <Route path={Page.LOGIN}
+                               element={
+                                   <Login
+                                       setIsUserLogged={setIsUserLogged}
+                                       setLoggedUserUsername={setLoggedUserUsername}
+                                       setToken={setToken}
+                                   />}
+                        />
 
-                <Route path={Page.UPLOAD_IMAGE} element={
-                    <ProtectedRoute>
-                        <UploadImage />
-                    </ProtectedRoute>
-                }/>
+                        <Route path={Page.LIST_OF_CITIES} element={
+                            <ProtectedRoute>
+                                <ListOfCities/>
+                            </ProtectedRoute>
+                        }/>
 
-                <Route path={Page.ALL_PHOTOS} element={
-                    <ProtectedRoute>
-                        <ShowAllPhotosForCurrentUser/>
-                    </ProtectedRoute>
-                }/>
+                        <Route path={Page.UPLOAD_IMAGE} element={
+                            <ProtectedRoute>
+                                <UploadImage/>
+                            </ProtectedRoute>
+                        }/>
 
-                <Route path={Page.ALL_PHOTOS + "/:city"} element={
-                    <ProtectedRoute>
-                        <ShowAllPhotosForCurrentUser/>
-                    </ProtectedRoute>
-                }/>
+                        <Route path={Page.ALL_PHOTOS} element={
+                            <ProtectedRoute>
+                                <ShowAllPhotosForCurrentUser/>
+                            </ProtectedRoute>
+                        }/>
 
-                <Route path={Page.ALL_OTHER_PAGES} element={ <NotFoundPage /> } />
+                        <Route path={Page.ALL_PHOTOS + "/:city"} element={
+                            <ProtectedRoute>
+                                <ShowAllPhotosForCurrentUser/>
+                            </ProtectedRoute>
+                        }/>
 
-            </Routes>
-        </BrowserRouter>
+                        <Route path={Page.ALL_OTHER_PAGES} element={<NotFoundPage/>}/>
+
+                    </Routes>
+                    <Footer/>
+                </div>
+            </BrowserRouter>
         </TokenContext.Provider>
     );
 }
 
-function ProtectedRoute ({ children }: ProtectedRouteProps): JSX.Element {
+function ProtectedRoute({children}: ProtectedRouteProps): JSX.Element {
     const [state, _] = useContext(TokenContext);
 
     if (state.isUserLogged === null) {
@@ -134,7 +139,7 @@ function ProtectedRoute ({ children }: ProtectedRouteProps): JSX.Element {
     if (state.isUserLogged) {
         return children;
     } else {
-        return <Navigate to={Page.ROOT} replace />;
+        return <Navigate to={Page.ROOT} replace/>;
     }
 
 }

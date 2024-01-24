@@ -27,7 +27,7 @@ function ListOfCities() {
     }
 
     return (
-        <>
+        <div id={"page_wrapper"}>
             <div>List of cities:</div>
 
             {listOfCities && listOfCities.map(city =>
@@ -37,7 +37,7 @@ function ListOfCities() {
 
             )}
 
-        </>
+        </div>
 
     );
 }

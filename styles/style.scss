@@ -5,6 +5,14 @@
 @import "pages/allPhotosForCurrentUser";
 @import "pages/welcome";
 @import "./pages/uploadImage";
+@import "./components/footer";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
 body {
   margin: 0;
@@ -12,6 +20,18 @@ body {
   min-height: 100vh;
   height: 100%;
   color: #ddd;
+}
+
+#content_and_footer_wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#page_wrapper {
+  width: 80%;
+  margin: 0 auto;
 }
 
 input[type=file],

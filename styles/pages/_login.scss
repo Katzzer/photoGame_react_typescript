@@ -4,6 +4,17 @@ $primary-color: #0ef;
 $border-radius-large: 40px;
 $border-radius-small: 8px;
 
+// TODO: remove when not need
+.login__container-testing {
+  max-width: 80%;
+  margin: 0 auto;
+
+  .tokenInfo {
+    word-break: break-all;
+  }
+}
+
+
 .login__container {
   position: relative;
   width: 256px;
@@ -13,13 +24,6 @@ $border-radius-small: 8px;
   align-items: center;
   margin: 300px auto 0;
   user-select: none;
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
 
   .login__box {
     position: absolute;

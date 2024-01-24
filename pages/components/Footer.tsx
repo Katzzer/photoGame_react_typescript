@@ -1,11 +1,11 @@
+import LinkToPage from "./LinkToPage";
+
 const Footer = () => {
 
     return (
         <>
             <footer>
-                <div className="wrapper">
-                    <div id="footer">
-
+                <div className="footer__wrapper">
 
                         <div className="go-home">
                             <h2><a href="src/components/main-components/Footer#projects-section">Go back to my projects</a></h2>
@@ -15,7 +15,6 @@ const Footer = () => {
                             <p>Created by <a href="src/components/main-components/Footer">Pavel Kostal</a></p>
                         </div>
 
-                    </div>
                 </div>
             </footer>
         </>
