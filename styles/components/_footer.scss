@@ -3,6 +3,7 @@ footer {
   background: black;
   color: #888;
   min-height: 100px;
+  padding: 20px 0;
 
   .footer__wrapper {
     width: 80%;
@@ -13,6 +14,10 @@ footer {
 
       .footer__section-name {
         margin-left: 5px;
+        a {
+          color: #888;
+          text-decoration: none;
+        }
       }
 
       .footer__arrow-right {
@@ -22,15 +27,32 @@ footer {
         fill: #888;
       }
 
-      &:hover .footer__section-name {
-        color: white;
+      &:hover {
         cursor: pointer;
+        .footer__section-name a {
+          color: white;
+          cursor: pointer;
+        }
+        .footer__arrow-right {
+          fill: white;
+        }
+
       }
 
-      &:hover .footer__arrow-right {
-        fill: white;
-      }
     }
 
+
+    .footer__created-by {
+      margin-top: 10px;
+      color: #888;
+
+      a {
+        color: #888;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
   }
 }
