@@ -7,5 +7,30 @@ footer {
   .footer__wrapper {
     width: 80%;
     margin: 0 auto;
+
+    .footer__arrow-and-section-name {
+      display: flex;
+
+      .footer__section-name {
+        margin-left: 5px;
+      }
+
+      .footer__arrow-right {
+        width: 15px;
+        height: 15px;
+        align-self: center;
+        fill: #888;
+      }
+
+      &:hover .footer__section-name {
+        color: white;
+        cursor: pointer;
+      }
+
+      &:hover .footer__arrow-right {
+        fill: white;
+      }
+    }
+
   }
 }
