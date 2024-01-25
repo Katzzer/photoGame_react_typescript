@@ -1,21 +1,31 @@
 header{
   background: #555555;
+  position: sticky;
+  top: 0;
+
+  .header__wrapper {
+    max-width: 1100px;
+    width: 80%;
+    margin: auto;
+    color: #ddd;
+    display: flex;
+    justify-content: space-between;
+    //padding: 0 20px;
+
+    .link-wrapper {
+      align-self: center;
+    }
+
+    #header {
+      overflow: auto;
+    }
+
+    //.header__textForDesktop {
+    //  max-width: 80%;
+    //  margin: 0 auto;
+    //}
+
+  }
 }
 
-.header__wrapper {
-  max-width: 1100px;
-  margin: auto;
-  color: #ddd;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
 
-  .link-wrapper {
-    align-self: center;
-  }
-
-  #header {
-    overflow: auto;
-  }
-
-}

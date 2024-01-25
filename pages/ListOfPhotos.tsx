@@ -94,7 +94,7 @@ function ListOfPhotos() {
         };
 
         if (imageId) {
-            const response = await axios.get(`${BACKEND_URL.LOCALHOST}/api/v1/data/image/${imageId}`, config);
+            const response = await axios.get(`${BACKEND_URL.LOCALHOST}/image/${imageId}`, config);
             console.log(response.data);
             setImage(URL.createObjectURL(response.data));
         }
@@ -108,7 +108,7 @@ function ListOfPhotos() {
 
     return (
         <div className="">
-            <div className={"all-photos-for-current-user__container"}>
+            <div className={"all-photos__container"}>
                 <button className={"all-photos-for-current-user__reload-button"} onClick={getListOfPhotos}>Reload data</button>
                 <h1>{header}</h1>
 
@@ -120,19 +120,19 @@ function ListOfPhotos() {
                 )}
 
                 {isModalWindowForImageOpen && image &&
-                    <div className={"all-photos-for-current-user__image"}>
-                        <div className={"all-photos-for-current-user__layer"}/>
-                        <button onClick={closeImage}>Close image</button>
-                        <img src={image} alt={"image"}/>
+                    <div className={"all-photos__image-wrapper"}>
+                        <div className={"all-photos__layer"}/>
+                        <button className={"all-photos__button"} onClick={closeImage}>Close image</button>
+                        <img className={"all-photos__image"} src={image} alt={"image"}/>
                     </div>
                 }
 
                 {isModalWindowForImageOpen && !image &&
-                    <div className={"all-photos-for-current-user__image"}>
-                        <div className={"all-photos-for-current-user__layer"}/>
-                        <button className={"all-photos-for-current-user__button-with-bottom-margin"} onClick={closeImage}>Close image</button>
-                        <div className={"all-photos-for-current-user__loading-state"}>
-                            <div className={"all-photos-for-current-user__loading"}></div>
+                    <div className={"all-photos__image-wrapper"}>
+                        <div className={"all-photos__layer"}/>
+                        <button className={"all-photos__button-with-bottom-margin"} onClick={closeImage}>Close image</button>
+                        <div className={"all-photos__loading-state"}>
+                            <div className={"all-photos__loading"}></div>
                         </div>
                     </div>
                 }
