@@ -3,6 +3,7 @@ import {Photo} from "../common/types";
 import axios from "axios";
 import TokenContext from "../context/token-context";
 import exifr from 'exifr'
+import {BACKEND_URL} from "../tools/constants";
 
 function UploadImage() {
     const [state, _] = useContext(TokenContext);
@@ -34,7 +35,7 @@ function UploadImage() {
         formData.append('imageFile', uploadedImage);
         formData.append('photo', blob);
 
-        axios.post('http://localhost:8080/api/v1/data',
+        axios.post(BACKEND_URL.LOCALHOST + "/save-photo",
             formData,
             {
                 headers: {

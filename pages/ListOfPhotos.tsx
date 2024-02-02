@@ -49,7 +49,7 @@ function ListOfPhotos() {
             },
         };
 
-        const response = await axios.get(`${BACKEND_URL.LOCALHOST}/image/thumbnail/${photo.id}`, config);
+        const response = await axios.get(`${BACKEND_URL.LOCALHOST}/photo/thumbnail/${photo.id}`, config);
         if (response.data) {
             photo.image = URL.createObjectURL(response.data);
             setListOfPhotosWithImage(prevState => {
@@ -70,7 +70,7 @@ function ListOfPhotos() {
     }
 
     function getListOfPhotos() {
-        const url = params.city ? `${BACKEND_URL.LOCALHOST}/images/${params.city}` : `${BACKEND_URL.LOCALHOST}/images`
+        const url = params.city ? `${BACKEND_URL.LOCALHOST}/photos/${params.city}` : `${BACKEND_URL.LOCALHOST}/photos/all-photos-for-current-user`
 
         setListOfPhotos([]);
         setListOfPhotosWithImage([]);
@@ -94,7 +94,7 @@ function ListOfPhotos() {
         };
 
         if (imageId) {
-            const response = await axios.get(`${BACKEND_URL.LOCALHOST}/image/${imageId}`, config);
+            const response = await axios.get(`${BACKEND_URL.LOCALHOST}/photo/${imageId}`, config);
             console.log(response.data);
             setImage(URL.createObjectURL(response.data));
         }
