@@ -17,7 +17,7 @@ function ListOfPhotos() {
     const [isModalWindowForImageOpen, setIsModalWindowForImageOpen] = useState(false);
     const [image, setImage] = useState("");
     const params = useParams();
-    const header = params.city ? `List of photos by city: ${params.city}` : "All users photos"
+    const header = params.country ? `List of photos by country: ${params.country} and city: ${params.city}` : "All users photos"
 
     useEffect(() => {
         if (!state.isUserLogged) {
@@ -70,7 +70,7 @@ function ListOfPhotos() {
     }
 
     function getListOfPhotos() {
-        const url = params.city ? `${BACKEND_URL.LOCALHOST}/photos/${params.city}` : `${BACKEND_URL.LOCALHOST}/photos/all-photos-for-current-user`
+        const url = params.country ? `${BACKEND_URL.LOCALHOST}/find-photos-by-location/${params.country}/${params.city}` : `${BACKEND_URL.LOCALHOST}/photos/all-photos-for-current-user`
 
         setListOfPhotos([]);
         setListOfPhotosWithImage([]);
@@ -137,7 +137,15 @@ function ListOfPhotos() {
                     </div>
                 }
 
-                <LinkToPage linkTo={Page.LIST_OF_CITIES} description={"Go back to list of cities"}/>
+                {/* show at page where is list of photos by country and city */}
+                {params.city &&
+                    <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} dynamicValue={params.country} description={"Go back to list of cities"}/>
+                }
+
+                {/* show at page with All users photos */}
+                {!params.city &&
+                    <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} description={"Find photo by location"}/>
+                }
 
             </div>
         </div>

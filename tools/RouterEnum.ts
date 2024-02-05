@@ -4,5 +4,5 @@ export enum Page {
     ALL_PHOTOS = "/all-photos" ,
     LOGIN = "/login",
     UPLOAD_IMAGE = "/upload-image",
-    LIST_OF_CITIES = "/list-of-cities"
+    FIND_PHOTOS_BY_LOCATION = "/find-photos-by-location"
 }

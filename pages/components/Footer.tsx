@@ -12,7 +12,7 @@ const Footer = () => {
                     <FooterLink linkName={"Login"} pageUrl={Page.LOGIN} />
                     <FooterLink linkName={"Upload image"} pageUrl={Page.UPLOAD_IMAGE} />
                     <FooterLink linkName={"All user photos"} pageUrl={Page.ALL_PHOTOS} />
-                    <FooterLink linkName={"List of cities"} pageUrl={Page.LIST_OF_CITIES} />
+                    <FooterLink linkName={"Find photos by location"} pageUrl={Page.FIND_PHOTOS_BY_LOCATION} />
 
                     <div className="footer__created-by">
                         <p>Created by <a href="https://www.pavelkostal.com" target="_blank">Pavel Kostal</a></p>

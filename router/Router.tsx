@@ -11,7 +11,7 @@ import getSessionAndVerify from "../security/auth";
 import Welcome from "../pages/Welcome";
 import UploadImage from "../pages/UploadImage";
 import Login from "../pages/Login";
-import ListOfCities from "../pages/ListOfCities";
+import ListOfCountriesOrCities from "../pages/ListOfCountriesOrCities";
 import Footer from "../pages/components/Footer";
 
 interface ProtectedRouteProps {
@@ -95,9 +95,15 @@ function Router() {
                                    />}
                         />
 
-                        <Route path={Page.LIST_OF_CITIES} element={
+                        <Route path={Page.FIND_PHOTOS_BY_LOCATION} element={
                             <ProtectedRoute>
-                                <ListOfCities/>
+                                <ListOfCountriesOrCities/>
+                            </ProtectedRoute>
+                        }/>
+
+                        <Route path={Page.FIND_PHOTOS_BY_LOCATION + "/:country"} element={
+                            <ProtectedRoute>
+                                <ListOfCountriesOrCities/>
                             </ProtectedRoute>
                         }/>
 
@@ -113,7 +119,7 @@ function Router() {
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.ALL_PHOTOS + "/:city"} element={
+                        <Route path={Page.ALL_PHOTOS + "/:country" + "/:city"} element={
                             <ProtectedRoute>
                                 <ShowAllPhotosForCurrentUser/>
                             </ProtectedRoute>
