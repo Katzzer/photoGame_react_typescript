@@ -1,19 +1,29 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Photo} from "../common/types";
 import axios from "axios";
 import TokenContext from "../context/token-context";
 import exifr from 'exifr'
 import {BACKEND_URL} from "../tools/constants";
 
-function UploadImage() {
+function UploadPhoto() {
     const [state, _] = useContext(TokenContext);
     const [uploadedImage, setUploadedImage] = useState(new Blob());
     const [uploadedImagePreview, setUploadedImagePreview] = useState("");
+    const [isSubmitButtonEnabled, setIsSubmitButtonEnabled] = useState(false);
     const [photo, setPhoto] = useState<Photo>({
         gpsPositionLatitude: undefined,
         gpsPositionLongitude: undefined,
         city: undefined
     });
+
+    useEffect(() => {
+        if (uploadedImage.size > 0 && ((photo.gpsPositionLongitude && photo.gpsPositionLatitude) || photo.city)) {
+            setIsSubmitButtonEnabled(true);
+        } else {
+            setIsSubmitButtonEnabled(false);
+        }
+
+    }, [photo, uploadedImage]);
 
     function setCityToPhoto(city: string) {
 
@@ -95,8 +105,7 @@ function UploadImage() {
 
                 <br/>
 
-                <input type="submit" value="Submit"/>
-
+                <input type="submit" value="Submit" disabled={!isSubmitButtonEnabled} className={"uploadImage__submit-button"}/>
 
                 {uploadedImagePreview &&
                     <div className={"uploadImage__image-preview"}>
@@ -116,4 +125,4 @@ function UploadImage() {
     );
 }
 
-export default UploadImage;
+export default UploadPhoto;

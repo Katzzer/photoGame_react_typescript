@@ -9,7 +9,7 @@ import {ActionType, initialState, State} from "../model/token.model";
 import TokenContext from "../context/token-context";
 import getSessionAndVerify from "../security/auth";
 import Welcome from "../pages/Welcome";
-import UploadImage from "../pages/UploadImage";
+import UploadPhoto from "../pages/UploadPhoto";
 import Login from "../pages/Login";
 import ListOfCountriesOrCities from "../pages/ListOfCountriesOrCities";
 import Footer from "../pages/components/Footer";
@@ -109,7 +109,7 @@ function Router() {
 
                         <Route path={Page.UPLOAD_IMAGE} element={
                             <ProtectedRoute>
-                                <UploadImage/>
+                                <UploadPhoto/>
                             </ProtectedRoute>
                         }/>
 
