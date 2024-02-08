@@ -1,4 +1,4 @@
-import RightArrow from "../../public/images/svg/arrow-right.svg?react";
+import RightArrow from "../../../public/images/svg/arrow-right.svg?react";
 import {Page} from "../../tools/RouterEnum";
 import {Link} from "react-router-dom";
 import React from "react";

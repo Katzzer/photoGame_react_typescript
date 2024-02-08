@@ -1,11 +1,11 @@
 @import "pages/notFoundPage";
 @import "pages/login";
-@import "./components/header";
-@import "./components/informationWithImage";
+@import "components/header";
+@import "components/informationWithImage";
 @import "pages/allPhotos";
 @import "pages/welcome";
-@import "./pages/uploadImage";
-@import "./components/footer";
+@import "pages/uploadImage";
+@import "components/footer";
 
 * {
   margin: 0;
