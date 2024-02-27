@@ -88,7 +88,7 @@ function UploadPhoto() {
     }
 
     return (
-        <>
+        <div className={"uploadPhoto__container"}>
             <div>Upload image:</div>
 
             <form onSubmit={handleSubmit}>
@@ -108,7 +108,7 @@ function UploadPhoto() {
                 <input type="submit" value="Submit" disabled={!isSubmitButtonEnabled} className={"uploadImage__submit-button"}/>
 
                 {uploadedImagePreview &&
-                    <div className={"uploadImage__image-preview"}>
+                    <div className={"uploadPhoto__photo-preview"}>
                         <img src={uploadedImagePreview} alt="image preview"/>
                     </div>
                 }
@@ -119,7 +119,7 @@ function UploadPhoto() {
 
             </form>
 
-        </>
+        </div>
 
 
     );

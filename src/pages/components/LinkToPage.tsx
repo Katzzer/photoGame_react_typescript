@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {PageDescription, PageUrl} from "../../tools/RouterEnum";
+import {PageName, PageUrl} from "../../tools/RouterEnum";
 
 interface Props {
     pageUrl: PageUrl,
-    description: PageDescription | string,
+    pageName: PageName | string,
     dynamicValue?: string
 }
 
@@ -14,7 +14,7 @@ function LinkToPage(props: Props) {
     return (
         <div className="mainPage__link-wrapper">
             <div className="link-wrapper">
-                <Link className="button" to={link}>{props.description}</Link>
+                <Link className="button" to={link}>{props.pageName}</Link>
             </div>
         </div>
     );

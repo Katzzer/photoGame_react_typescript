@@ -139,12 +139,12 @@ function ListOfPhotos() {
 
                 {/* show at page where is list of photos by country and city */}
                 {params.city &&
-                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} dynamicValue={params.country} description={"Go back to list of cities"}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} dynamicValue={params.country} pageName={"Go back to list of cities"}/>
                 }
 
                 {/* show at page with All users photos */}
                 {!params.city &&
-                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={"Find photo by location"}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} pageName={"Find photo by location"}/>
                 }
 
             </div>

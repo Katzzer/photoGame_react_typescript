@@ -8,7 +8,7 @@ export enum PageUrl {
     FIND_PHOTOS_BY_LOCATION = "/find-photos-by-location"
 }
 
-export enum PageDescription {
+export enum PageName {
     ROOT = "Home page",
     MENU = "Menu",
     ALL_PHOTOS = "All user photos" ,

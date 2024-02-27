@@ -47,20 +47,20 @@ function ListOfCountriesOrCities() {
             {/* show at page with list of countries */}
             {!params.country && listOfCountriesOrCities && listOfCountriesOrCities.map(countryOrCity =>
                 <div key={countryOrCity}>
-                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={countryOrCity} dynamicValue={countryOrCity}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} pageName={countryOrCity} dynamicValue={countryOrCity}/>
                 </div>
             )}
 
             {/* show at page with list of cities */}
             {params.country && listOfCountriesOrCities && listOfCountriesOrCities.map(countryOrCity =>
                 <div key={countryOrCity}>
-                    <LinkToPage pageUrl={PageUrl.ALL_PHOTOS} description={countryOrCity} dynamicValue={params.country + "/" + countryOrCity}/>
+                    <LinkToPage pageUrl={PageUrl.ALL_PHOTOS} pageName={countryOrCity} dynamicValue={params.country + "/" + countryOrCity}/>
                 </div>
             )}
 
             {/* show at page with list of cities */}
             {params.country &&
-                <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={"Back to list of countries"} />
+                <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} pageName={"Back to list of countries"} />
             }
 
         </div>

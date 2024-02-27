@@ -1,5 +1,5 @@
 import FooterLink from "./FooterLink";
-import {PageUrl, PageDescription} from "../../tools/RouterEnum";
+import {PageUrl, PageName} from "../../tools/RouterEnum";
 import React, {useContext} from "react";
 import TokenContext from "../../context/token-context";
 
@@ -13,12 +13,12 @@ const Footer = () => {
 
                     {state.isUserLogged &&
                         <>
-                            <FooterLink pageUrl={PageUrl.ROOT} description={PageDescription.ROOT}  />
-                            <FooterLink pageUrl={PageUrl.MENU} description={PageDescription.MENU}  />
-                            <FooterLink pageUrl={PageUrl.LOGIN} description={PageDescription.LOGIN}  />
-                            <FooterLink pageUrl={PageUrl.UPLOAD_IMAGE} description={PageDescription.UPLOAD_IMAGE}  />
-                            <FooterLink pageUrl={PageUrl.ALL_PHOTOS} description={PageDescription.ALL_PHOTOS}  />
-                            <FooterLink pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={PageDescription.FIND_PHOTOS_BY_LOCATION}  />
+                            <FooterLink pageUrl={PageUrl.ROOT} description={PageName.ROOT}  />
+                            <FooterLink pageUrl={PageUrl.MENU} description={PageName.MENU}  />
+                            <FooterLink pageUrl={PageUrl.LOGIN} description={PageName.LOGIN}  />
+                            <FooterLink pageUrl={PageUrl.UPLOAD_IMAGE} description={PageName.UPLOAD_IMAGE}  />
+                            <FooterLink pageUrl={PageUrl.ALL_PHOTOS} description={PageName.ALL_PHOTOS}  />
+                            <FooterLink pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={PageName.FIND_PHOTOS_BY_LOCATION}  />
                         </>
                     }
 

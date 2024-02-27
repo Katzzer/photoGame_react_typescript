@@ -1,10 +1,10 @@
 import RightArrow from "../../images/svg/arrow-right.svg?react";
-import {PageUrl, PageDescription} from "../../tools/RouterEnum";
+import {PageUrl, PageName} from "../../tools/RouterEnum";
 import {Link} from "react-router-dom";
 import React from "react";
 
 interface footerLinkProps {
-    description: PageDescription,
+    description: PageName,
     pageUrl: PageUrl
 }
 
