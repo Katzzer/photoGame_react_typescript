@@ -3,7 +3,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
 import {redirect, useParams} from "react-router-dom";
-import {Page} from "../tools/RouterEnum";
+import {PageUrl} from "../tools/RouterEnum";
 import InformationWithImage from "./components/InformationWithImage";
 import LinkToPage from "./components/LinkToPage";
 import {BACKEND_URL} from "../tools/constants";
@@ -21,7 +21,7 @@ function ListOfPhotos() {
 
     useEffect(() => {
         if (!state.isUserLogged) {
-            redirect(Page.ROOT);
+            redirect(PageUrl.ROOT);
         }
     }, [listOfPhotos, listOfPhotosWithImage, image]);
 
@@ -139,12 +139,12 @@ function ListOfPhotos() {
 
                 {/* show at page where is list of photos by country and city */}
                 {params.city &&
-                    <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} dynamicValue={params.country} description={"Go back to list of cities"}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} dynamicValue={params.country} description={"Go back to list of cities"}/>
                 }
 
                 {/* show at page with All users photos */}
                 {!params.city &&
-                    <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} description={"Find photo by location"}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={"Find photo by location"}/>
                 }
 
             </div>

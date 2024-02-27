@@ -1,8 +1,22 @@
 //$breakpoint-tablet: 768px;
 $breakpoint-mobile: 600px;
+$breakpoint-mobile-very-small-width: 400px;
+$height-small: 1000px;
 
 @mixin phoneResolution {
   @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+@mixin phoneResolutionVerySmallWidth {
+  @media (max-width: #{$breakpoint-mobile-very-small-width}) {
+    @content;
+  }
+}
+
+@mixin smallHeight {
+  @media (max-height: #{$height-small}) {
     @content;
   }
 }

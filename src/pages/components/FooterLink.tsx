@@ -1,11 +1,11 @@
 import RightArrow from "../../images/svg/arrow-right.svg?react";
-import {Page} from "../../tools/RouterEnum";
+import {PageUrl, PageDescription} from "../../tools/RouterEnum";
 import {Link} from "react-router-dom";
 import React from "react";
 
 interface footerLinkProps {
-    linkName: string,
-    pageUrl: Page
+    description: PageDescription,
+    pageUrl: PageUrl
 }
 
 function FooterLink(props: footerLinkProps) {
@@ -13,7 +13,7 @@ function FooterLink(props: footerLinkProps) {
         <div className="footer__arrow-and-section-name">
             <RightArrow className="footer__arrow-right"/>
             <div className="footer__section-name">
-                <Link to={props.pageUrl}>{props.linkName}</Link>
+                <Link to={props.pageUrl}>{props.description}</Link>
             </div>
         </div>
     );

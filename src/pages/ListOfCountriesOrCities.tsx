@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios, {AxiosRequestConfig} from "axios";
 import TokenContext from "../context/token-context";
 import LinkToPage from "./components/LinkToPage";
-import {Page} from "../tools/RouterEnum";
+import {PageUrl} from "../tools/RouterEnum";
 import {BACKEND_URL} from "../tools/constants";
 import {useParams} from "react-router-dom";
 
@@ -47,20 +47,20 @@ function ListOfCountriesOrCities() {
             {/* show at page with list of countries */}
             {!params.country && listOfCountriesOrCities && listOfCountriesOrCities.map(countryOrCity =>
                 <div key={countryOrCity}>
-                    <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} description={countryOrCity} dynamicValue={countryOrCity}/>
+                    <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={countryOrCity} dynamicValue={countryOrCity}/>
                 </div>
             )}
 
             {/* show at page with list of cities */}
             {params.country && listOfCountriesOrCities && listOfCountriesOrCities.map(countryOrCity =>
                 <div key={countryOrCity}>
-                    <LinkToPage linkTo={Page.ALL_PHOTOS} description={countryOrCity} dynamicValue={params.country + "/" + countryOrCity}/>
+                    <LinkToPage pageUrl={PageUrl.ALL_PHOTOS} description={countryOrCity} dynamicValue={params.country + "/" + countryOrCity}/>
                 </div>
             )}
 
             {/* show at page with list of cities */}
             {params.country &&
-                <LinkToPage linkTo={Page.FIND_PHOTOS_BY_LOCATION} description={"Back to list of countries"} />
+                <LinkToPage pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={"Back to list of countries"} />
             }
 
         </div>

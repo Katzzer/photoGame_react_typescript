@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Header from "../pages/components/Header";
 import NotFoundPage from "../pages/NotFoundPage";
-import {Page} from "../tools/RouterEnum";
+import {PageUrl} from "../tools/RouterEnum";
 import ShowAllPhotosForCurrentUser from "../pages/ListOfPhotos";
 import {useContext, useEffect, useReducer} from "react";
 import {tokenReducer} from "../reducer/tokenReducer";
@@ -13,6 +13,7 @@ import UploadPhoto from "../pages/UploadPhoto";
 import Login from "../pages/Login";
 import ListOfCountriesOrCities from "../pages/ListOfCountriesOrCities";
 import Footer from "../pages/components/Footer";
+import Menu from "../pages/Menu";
 
 interface ProtectedRouteProps {
     children: JSX.Element;
@@ -84,9 +85,9 @@ function Router() {
                     <Header/>
                     <Routes>
 
-                        <Route path={Page.ROOT} element={<Welcome/>}/>
+                        <Route path={PageUrl.ROOT} element={<Welcome/>}/>
 
-                        <Route path={Page.LOGIN}
+                        <Route path={PageUrl.LOGIN}
                                element={
                                    <Login
                                        setIsUserLogged={setIsUserLogged}
@@ -95,37 +96,45 @@ function Router() {
                                    />}
                         />
 
-                        <Route path={Page.FIND_PHOTOS_BY_LOCATION} element={
+                        <Route path={PageUrl.MENU}
+                               element={
+                                   <ProtectedRoute>
+                                       <Menu/>
+                                   </ProtectedRoute>
+                               }
+                        />
+
+                        <Route path={PageUrl.FIND_PHOTOS_BY_LOCATION} element={
                             <ProtectedRoute>
                                 <ListOfCountriesOrCities/>
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.FIND_PHOTOS_BY_LOCATION + "/:country"} element={
+                        <Route path={PageUrl.FIND_PHOTOS_BY_LOCATION + "/:country"} element={
                             <ProtectedRoute>
                                 <ListOfCountriesOrCities/>
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.UPLOAD_IMAGE} element={
+                        <Route path={PageUrl.UPLOAD_IMAGE} element={
                             <ProtectedRoute>
                                 <UploadPhoto/>
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.ALL_PHOTOS} element={
+                        <Route path={PageUrl.ALL_PHOTOS} element={
                             <ProtectedRoute>
                                 <ShowAllPhotosForCurrentUser/>
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.ALL_PHOTOS + "/:country" + "/:city"} element={
+                        <Route path={PageUrl.ALL_PHOTOS + "/:country" + "/:city"} element={
                             <ProtectedRoute>
                                 <ShowAllPhotosForCurrentUser/>
                             </ProtectedRoute>
                         }/>
 
-                        <Route path={Page.ALL_OTHER_PAGES} element={<NotFoundPage/>}/>
+                        <Route path={PageUrl.ALL_OTHER_PAGES} element={<NotFoundPage/>}/>
 
                     </Routes>
                     <Footer/>
@@ -145,7 +154,7 @@ function ProtectedRoute({children}: ProtectedRouteProps): JSX.Element {
     if (state.isUserLogged) {
         return children;
     } else {
-        return <Navigate to={Page.ROOT} replace/>;
+        return <Navigate to={PageUrl.ROOT} replace/>;
     }
 
 }

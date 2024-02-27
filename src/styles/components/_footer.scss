@@ -1,4 +1,5 @@
 footer {
+  user-select: none;
   margin-top: auto;
   background: black;
   color: #888;
@@ -11,6 +12,7 @@ footer {
 
     .footer__arrow-and-section-name {
       display: flex;
+      width: 250px;
 
       .footer__section-name {
         margin-left: 5px;

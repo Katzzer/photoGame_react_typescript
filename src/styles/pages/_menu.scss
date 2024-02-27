@@ -1,0 +1,10 @@
+.menu__container {
+  user-select: none;
+  max-width: 1100px;
+  margin: auto;
+
+  .menu__heading {
+    font-weight: bold;
+    font-size: 40px;
+  }
+}

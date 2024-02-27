@@ -6,6 +6,8 @@ import {AuthenticationDetails, CognitoUser, CognitoUserAttribute} from "amazon-c
 import UserPool from "../security/data/UserPool";
 import axios from "axios";
 import {BACKEND_URL} from "../tools/constants";
+import {useNavigate} from "react-router-dom";
+import {PageUrl} from "../tools/RouterEnum";
 
 interface PropsType {
     setIsUserLogged: (isUserLogged: boolean) => void
@@ -20,6 +22,7 @@ function Login(props:PropsType) {
     const [password, setPassword] = useState("Monitor11!");
     const [messageFromBackend, setMessageFromBackend] = useState(""); // TODO: only for testing:
     const [isShownLoginForm, setIsShownLoginForm] = useState(true);
+    const navigate = useNavigate();
 
     const renderSpans = Array.from({length: 50}, (_, index) => {
         return <AnimatedSpan key={index} value={index}/>;
@@ -33,6 +36,7 @@ function Login(props:PropsType) {
                 props.setToken(ActionType.SET_ID_TOKEN, {idToken: session.getIdToken().getJwtToken()});
                 props.setToken(ActionType.SET_ACCESS_TOKEN, {accessToken: session.getAccessToken().getJwtToken()});
                 props.setToken(ActionType.SET_REFRESH_TOKEN, {refreshToken: session.getRefreshToken().getToken()});
+                navigate(PageUrl.MENU);
             } else {
                 console.log("user is not logged");
                 props.setIsUserLogged(false);

@@ -25,9 +25,22 @@ $border-radius-small: 8px;
   margin: 300px auto 0;
   user-select: none;
 
+  @include smallHeight {
+    height: 370px;
+    margin-top: 60px;
+  }
+
+  @include phoneResolutionVerySmallWidth {
+    width: 100%;
+  }
+
   .login__box {
     position: absolute;
     width: 400px;
+
+    @include phoneResolutionVerySmallWidth {
+      width: 100%;
+    }
 
     h2 {
       font-size: 2em;
@@ -38,6 +51,10 @@ $border-radius-small: 8px;
     form {
       width: 100%;
       padding: 0 50px;
+
+      @include phoneResolutionVerySmallWidth {
+        padding: 0 20px;
+      }
     }
 
     .login__input-box {
@@ -137,6 +154,10 @@ $border-radius-small: 8px;
     transform: scale(2.2) rotate(calc(var(--i) * (360deg / 50)));
     animation: animateBlink 3s linear infinite;
     animation-delay: calc(var(--i) * (3s / 50));
+
+    @include smallHeight {
+      display: none;
+    }
 
     @include phoneResolution {
       display: none;
