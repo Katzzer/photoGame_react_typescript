@@ -89,36 +89,56 @@ function UploadPhoto() {
 
     return (
         <div className={"uploadPhoto__container"}>
-            <div>Upload image:</div>
+            <div className={"uploadPhoto__wrapper"}>
+                <div className={"uploadPhoto__box"}>
+                    <div className={"uploadPhoto__name"}>Upload a photo</div>
+                    <div className={"uploadPhoto__text"}>Select a photo to upload from your computer or device.</div>
 
-            <form onSubmit={handleSubmit}>
-                <label>
-                    City:
-                    <input type="text" name="city" onChange={(inputValue) => setCityToPhoto(inputValue.target.value)}/>
-                </label>
+                    <form onSubmit={handleSubmit}>
 
-                <br/>
+                        <div className={"uploadPhoto__chooseFileWrapper"}>
+                            <button className={"uploadPhoto__button"}>Choose Photo
+                                <input type="file" name="inputFile" onChange={handleImageUpload}/>
+                            </button>
+                        </div>
 
-                <label>
-                    <input type="file" name="inputFile" onChange={handleImageUpload}/>
-                </label>
+                        {uploadedImagePreview &&
+                            <div className={"uploadPhoto__photo-preview"}>
+                                <img src={uploadedImagePreview} alt="image preview"/>
+                            </div>
+                        }
 
-                <br/>
 
-                <input type="submit" value="Submit" disabled={!isSubmitButtonEnabled} className={"uploadImage__submit-button"}/>
+                        {uploadedImagePreview && !photo.gpsPositionLatitude &&
+                            <div className={"uploadPhoto__city-wrapper"}>
+                                <span>City:</span>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    onChange={(inputValue) => setCityToPhoto(inputValue.target.value)}
+                                    placeholder={"Please enter city"}
+                                    className={photo.city ? "" : "warning"}
+                                />
+                            </div>
+                        }
 
-                {uploadedImagePreview &&
-                    <div className={"uploadPhoto__photo-preview"}>
-                        <img src={uploadedImagePreview} alt="image preview"/>
-                    </div>
-                }
 
-                <div>
-                    GPS: {photo?.gpsPositionLatitude} : {photo?.gpsPositionLongitude}
+                        {photo.gpsPositionLatitude &&
+                            <div className={"uploadPhoto__gps-wrapper"}>
+                                GPS: {photo?.gpsPositionLatitude} : {photo?.gpsPositionLongitude}
+                            </div>
+                        }
+
+                        {uploadedImagePreview &&
+                            <div className={"uploadPhoto__submit-button-wrapper"}>
+                                <input type="submit" value="Submit" disabled={!isSubmitButtonEnabled} className={"uploadPhoto__submit-button"}/>
+                            </div>
+                        }
+
+
+                    </form>
                 </div>
-
-            </form>
-
+            </div>
         </div>
 
 
