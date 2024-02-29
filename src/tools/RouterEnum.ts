@@ -13,6 +13,6 @@ export enum PageName {
     MENU = "Menu",
     ALL_PHOTOS = "All user photos" ,
     LOGIN = "Login",
-    UPLOAD_IMAGE = "Upload image",
+    UPLOAD_PHOTO = "Upload photo",
     FIND_PHOTOS_BY_LOCATION = "Find photos by location"
 }

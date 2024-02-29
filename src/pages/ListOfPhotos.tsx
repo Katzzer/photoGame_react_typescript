@@ -4,7 +4,7 @@ import TokenContext from "../context/token-context";
 import {Photo} from "../common/types";
 import {redirect, useParams} from "react-router-dom";
 import {PageUrl} from "../tools/RouterEnum";
-import InformationWithImage from "./components/InformationWithImage";
+import InformationWithPhoto from "./components/InformationWithPhoto";
 import LinkToPage from "./components/LinkToPage";
 import {BACKEND_URL} from "../tools/constants";
 
@@ -108,31 +108,34 @@ function ListOfPhotos() {
 
     return (
         <div className="">
-            <div className={"all-photos__container"}>
-                <button className={"all-photos-for-current-user__reload-button"} onClick={getListOfPhotos}>Reload data</button>
+            <div className={"list-of-photos__container"}>
+                <button className={"list-of-photos__reload-button"} onClick={getListOfPhotos}>Reload data</button>
                 <h1>{header}</h1>
 
-                {listOfPhotos && listOfPhotosWithImage.map(photo =>
-                  <InformationWithImage
-                      key={photo.id}
-                      photo={photo}
-                      showModalWindowWithImage={showModalWindowWithImage}/>
-                )}
+                <div className={"list-of-photos__photos-wrapper"}>
+                    {listOfPhotos && listOfPhotosWithImage.map(photo =>
+                        <InformationWithPhoto
+                            key={photo.id}
+                            photo={photo}
+                            showModalWindowWithPhoto={showModalWindowWithImage}/>
+                    )}
+                </div>
+
 
                 {isModalWindowForImageOpen && image &&
-                    <div className={"all-photos__image-wrapper"}>
-                        <div className={"all-photos__layer"}/>
-                        <button className={"all-photos__button"} onClick={closeImage}>Close image</button>
-                        <img className={"all-photos__image"} src={image} alt={"image"}/>
+                    <div className={"list-of-photos__photo-wrapper"}>
+                        <div className={"list-of-photos__layer"}/>
+                        <button className={"list-of-photos__button"} onClick={closeImage}>Close image</button>
+                        <img className={"list-of-photos__image"} src={image} alt={"image"}/>
                     </div>
                 }
 
                 {isModalWindowForImageOpen && !image &&
-                    <div className={"all-photos__image-wrapper"}>
-                        <div className={"all-photos__layer"}/>
-                        <button className={"all-photos__button-with-bottom-margin"} onClick={closeImage}>Close image</button>
-                        <div className={"all-photos__loading-state"}>
-                            <div className={"all-photos__loading"}></div>
+                    <div className={"list-of-photos__photo-wrapper"}>
+                        <div className={"list-of-photos__layer"}/>
+                        <button className={"list-of-photos__button-with-bottom-margin"} onClick={closeImage}>Close image</button>
+                        <div className={"list-of-photos__loading-state"}>
+                            <div className={"list-of-photos__loading"}></div>
                         </div>
                     </div>
                 }

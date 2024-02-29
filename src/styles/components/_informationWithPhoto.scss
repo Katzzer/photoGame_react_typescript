@@ -1,18 +1,25 @@
-.informationWithImage__wrapper {
+@import "../default";
+
+.information-with-photo__wrapper {
   display: flex;
   height: 200px;
-  width: 100%;
+  width: 48%;
   border: 1px solid;
   border-radius: 5px;
   margin: 10px 0;
+  cursor: pointer;
 
-  .informationWithImage__image-wrapper {
-    width: 20%;
+  @include tabletResolution {
+    width: 100%;
+  }
+
+  .information-with-photo__photo-wrapper {
+    width: 40%;
     display: flex;
     justify-content: center;
     align-content: center;
 
-    .informationWithImage__image {
+    .information-with-photo__photo {
       max-width:100%;
       max-height:100%;
       height:auto;
@@ -20,8 +27,8 @@
     }
   }
 
-  .informationWithImage__data-wrapper {
-    width: 40%;
+  .information-with-photo__data-wrapper {
+    width: 60%;
     background: grey;
     padding: 10px;
     font-size: 20px;

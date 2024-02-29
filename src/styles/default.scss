@@ -1,7 +1,16 @@
 //$breakpoint-tablet: 768px;
+$max-desktop-width: 1500px;
+$breakpoint-desktop: 1100px;
 $breakpoint-mobile: 600px;
 $breakpoint-mobile-very-small-width: 450px;
 $height-small: 1000px;
+$height-very-small: 1000px;
+
+@mixin tabletResolution {
+  @media (max-width: #{$breakpoint-desktop}) {
+    @content;
+  }
+}
 
 @mixin phoneResolution {
   @media (max-width: #{$breakpoint-mobile}) {
@@ -17,6 +26,12 @@ $height-small: 1000px;
 
 @mixin smallHeight {
   @media (max-height: #{$height-small}) {
+    @content;
+  }
+}
+
+@mixin verySmallHeight {
+  @media (max-height: #{$height-very-small}) {
     @content;
   }
 }

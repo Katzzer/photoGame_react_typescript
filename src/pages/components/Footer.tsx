@@ -16,7 +16,7 @@ const Footer = () => {
                             <FooterLink pageUrl={PageUrl.ROOT} description={PageName.ROOT}  />
                             <FooterLink pageUrl={PageUrl.MENU} description={PageName.MENU}  />
                             <FooterLink pageUrl={PageUrl.LOGIN} description={PageName.LOGIN}  />
-                            <FooterLink pageUrl={PageUrl.UPLOAD_IMAGE} description={PageName.UPLOAD_IMAGE}  />
+                            <FooterLink pageUrl={PageUrl.UPLOAD_IMAGE} description={PageName.UPLOAD_PHOTO}  />
                             <FooterLink pageUrl={PageUrl.ALL_PHOTOS} description={PageName.ALL_PHOTOS}  />
                             <FooterLink pageUrl={PageUrl.FIND_PHOTOS_BY_LOCATION} description={PageName.FIND_PHOTOS_BY_LOCATION}  />
                         </>
