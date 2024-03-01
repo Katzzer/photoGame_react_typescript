@@ -172,7 +172,7 @@ function Login(props:PropsType) {
                                 <a href="#">Forgot your password?</a>
                             </div>
                             <button onClick={onLogin} className="login__btn">Login</button>
-                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Signup</div>
+                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Not a member? Sign Up!</div>
                         </form>
                     </div> }
 
@@ -194,8 +194,8 @@ function Login(props:PropsType) {
                             <div className="login__forgot-pass">
                                 <a href="#">Forgot your password?</a>
                             </div>
-                            <button onClick={onSubmit} className="login__btn">Signup</button>
-                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Log in</div>
+                            <button onClick={onSubmit} className="login__btn">Sign Up</button>
+                            <div className="login__signup-login-link" onClick={toggleLoginAndSignupForm}>Already member? Log In!</div>
                         </form>
                     </div>}
 
