@@ -7,6 +7,7 @@ import {PageUrl} from "../tools/RouterEnum";
 import InformationWithPhoto from "./components/InformationWithPhoto";
 import LinkToPage from "./components/LinkToPage";
 import {BACKEND_URL} from "../tools/constants";
+import ErrorModal from "./components/ErrorModal";
 
 // TODO: implement on backend last changes and here upload new photo when there are some changes
 
@@ -18,6 +19,8 @@ function ListOfPhotos() {
     const [image, setImage] = useState("");
     const params = useParams();
     const header = params.country ? `List of photos by country: ${params.country} and city: ${params.city}` : "All users photos"
+    const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
+    const [errorDetail, setErrorDetail] = useState("");
 
     useEffect(() => {
         if (!state.isUserLogged) {
@@ -79,9 +82,14 @@ function ListOfPhotos() {
                 Authorization: `Bearer ${state.idToken}`
             },
         };
+
         axios.get(url, config).then(response => {
             setListOfPhotos(response.data);
+        }).catch(error => {
+            setErrorDetail(error.message);
+            setIsErrorModalVisible(true);
         })
+
     }
 
     async function showModalWindowWithImage(imageId: number | undefined) {
@@ -106,8 +114,15 @@ function ListOfPhotos() {
         setIsModalWindowForImageOpen(false);
     }
 
+    function closeErrorModal() {
+        setIsErrorModalVisible(false);
+    }
+
     return (
         <div className="">
+
+            {isErrorModalVisible && <ErrorModal title="Some error with backend" errorDetail={errorDetail} closeModal={closeErrorModal}/> }
+
             <div className={"list-of-photos__container"}>
                 <button className={"list-of-photos__reload-button"} onClick={getListOfPhotos}>Reload data</button>
                 <h1>{header}</h1>
@@ -120,7 +135,6 @@ function ListOfPhotos() {
                             showModalWindowWithPhoto={showModalWindowWithImage}/>
                     )}
                 </div>
-
 
                 {isModalWindowForImageOpen && image &&
                     <div className={"list-of-photos__photo-wrapper"}>

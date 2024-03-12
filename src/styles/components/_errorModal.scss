@@ -1,0 +1,28 @@
+.error-modal__container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  min-width: 200px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+
+  .error-modal__title {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .error-modal__error-detail {
+    font-size: 20px;
+  }
+
+  .error-modal__button {
+    margin-top: 20px;
+  }
+}
