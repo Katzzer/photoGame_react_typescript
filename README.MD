@@ -10,3 +10,7 @@
 - React
 - AWS Cognito
 - AWS API Gateway
+
+## Notes:
+- There is duplicate file `index.html` (one in root and one in directory /public) both are needed one for running app
+in development mode and second (in public directory) for creating Docker image
