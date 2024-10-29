@@ -34,7 +34,7 @@ function ListOfCountriesOrCities() {
             },
         };
 
-        axios.get(`${BACKEND_URL.LOCALHOST}/find-photos-by-location${url}`, config)
+        axios.get(`${BACKEND_URL}/find-photos-by-location${url}`, config)
             .then(response => {
                 setListOfCountriesOrCities(response.data);
             })

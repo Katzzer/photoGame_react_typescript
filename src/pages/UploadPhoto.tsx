@@ -45,7 +45,7 @@ function UploadPhoto() {
         formData.append('imageFile', uploadedImage);
         formData.append('photo', blob);
 
-        axios.post(BACKEND_URL.LOCALHOST + "/save-photo",
+        axios.post(BACKEND_URL + "/save-photo",
             formData,
             {
                 headers: {

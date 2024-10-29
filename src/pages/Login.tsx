@@ -24,6 +24,10 @@ function Login(props:PropsType) {
     const [isShownLoginForm, setIsShownLoginForm] = useState(true);
     const navigate = useNavigate();
 
+    // TODO: delete in future, just for testing in K8S
+    console.log("BACKEND_URL is: ", BACKEND_URL);
+    console.log("VITE_BACKEND_URL from .env:", import.meta.env.VITE_BACKEND_URL);
+
     const renderSpans = Array.from({length: 50}, (_, index) => {
         return <AnimatedSpan key={index} value={index}/>;
     });
@@ -147,7 +151,7 @@ function Login(props:PropsType) {
             headers: { Authorization: `Bearer ${state.idToken}` }
         };
 
-        const response= await axios.get(BACKEND_URL.LOCALHOST, config);
+        const response= await axios.get(BACKEND_URL, config);
         console.log(response.data);
         setMessageFromBackend(response.data);
     }
